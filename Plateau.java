@@ -4,13 +4,16 @@ import java.util.ArrayList;
 public class Plateau {
 
 	final Case[][] plateau;
-	HashMap<String, List<String>> codeCouleur;
+	private HashMap<String, List<String>> codeCouleur;
+	private List<Case> casesLibres;
 	
 	public Plateau(int size){
 		this.plateau = new Case[size][size];
+		this.casesLibres = new ArrayList();
 		for (int i=0; i<size; i++){
 			for (int j=0; j<size; j++){
 				this.plateau[i][j] = new Case(i, j);
+				this.casesLibres.add(this.plateau[i][j]);
 			}
 		}
 	}
@@ -20,13 +23,13 @@ public class Plateau {
 	}
 	
 	/**
-	 * Renvoie le nombre de pions alignés pour chacune des 4 directions à partir de la case (i, j).
-	 * @param i Ordonnée de la case.
+	 * Renvoie le nombre de pions alignÃ©s pour chacune des 4 directions Ã  partir de la case (i, j).
+	 * @param i OrdonnÃ©e de la case.
 	 * @param j Abscisse de la case.
 	 * @return Un tableau d'entiers [Nord>Sud, Est>Ouest, Nord-Ouest>Sud-Est, Nord-Est>Sud-Ouest]  
 	 */
 	public int[] getAlign(int i, int j){
-		//TODO : améliorer la compléxité
+		//TODO : amÃ©liorer la complÃ©xitÃ©
 		int[] alignements = new int[4];
 		String c = this.plateau[i][j].getCouleur();
 		int x = i-1;
@@ -81,11 +84,11 @@ public class Plateau {
 	}
 
 	/**
-	 * Renvoie true s'il existe un chemin de la case (i,j) à la case (k,l)
-	 * @param i Ordonnée de la case d'origine.
+	 * Renvoie true s'il existe un chemin de la case (i,j) Ã  la case (k,l)
+	 * @param i OrdonnÃ©e de la case d'origine.
 	 * @param j Abscisse de la case d'origine.
-	 * @param k Ordonnée de la case d'arrivée.
-	 * @param l Abscisse de la case d'arrivée.
+	 * @param k OrdonnÃ©e de la case d'arrivÃ©e.
+	 * @param l Abscisse de la case d'arrivÃ©e.
 	 * @return True s'il existe un chemin, false sinon.
 	 */
 	public boolean existeChemin(int i, int j, int k, int l){
@@ -193,7 +196,7 @@ public class Plateau {
 				return -1;
 			}
 		case "E":
-			if (j<this.plateau.length-1){ // on part du principe que le plateau est carré
+			if (j<this.plateau.length-1){ // on part du principe que le plateau est carrÃ©
 				return j+1;
 			} else {
 				return -1;
