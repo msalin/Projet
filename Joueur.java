@@ -14,4 +14,6 @@ public abstract class Joueur {
   public int getNbPoints(){
     return this.nbPointsCourants;
   }
+  
+  public abstract int[] getCoup();
 }
