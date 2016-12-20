@@ -206,14 +206,13 @@ public class Plateau {
 		}
 	}
 	
-	public boolean pose(int i, int j, String c){
+	public void pose(int i, int j, String c) throws CaseOccupeeException{
 		//TODO
-		return false;
+		
 	}
 	
-	public boolean deplace(int i, int j, int k, int l){
+	public void deplace(int i, int j, int k, int l) throws PasDeCheminException, CaseOccupeeException, CaseVideException{
 		//TODO
-		return false;
 	}
 	
 	public class Case{
