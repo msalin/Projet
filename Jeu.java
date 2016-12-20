@@ -8,4 +8,10 @@ public abstract class Jeu {
     this.joueur2 = j2;
     this.plateau = p;
   }
+  
+  //Abstract ?
+  public static void afficheRegles(){
+  }
+  
+  public abstract void jouer();
 }
