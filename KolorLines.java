@@ -17,5 +17,6 @@ public class KolorLines extends Jeu {
       h.put(couleurs[i], l);
     }
     this.plateau.setCodeCouleur(h);
+  }
 
 }
