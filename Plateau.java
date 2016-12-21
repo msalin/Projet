@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Plateau {
 
 	final Case[][] plateau;
-	private HashMap<String, List<String>> codeCouleur;
+	public HashMap<String, List<String>> codeCouleur;
 	private List<Case> casesLibres;
 	
 	public Plateau(int size){
@@ -30,13 +30,13 @@ public class Plateau {
 	}
 	
 	/**
-	 * Renvoie le nombre de pions alignÃ©s pour chacune des 4 directions Ã  partir de la case (i, j).
-	 * @param i OrdonnÃ©e de la case.
+	 * Renvoie le nombre de pions alignés pour chacune des 4 directions à partir de la case (i, j).
+	 * @param i Ordonnée de la case.
 	 * @param j Abscisse de la case.
 	 * @return Un tableau d'entiers [Nord>Sud, Est>Ouest, Nord-Ouest>Sud-Est, Nord-Est>Sud-Ouest]  
 	 */
 	public int[] getAlign(int i, int j){
-		//TODO : amÃ©liorer la complÃ©xitÃ©
+		//TODO : améliorer la compléxité
 		int[] alignements = new int[4];
 		String c = this.plateau[i][j].getCouleur();
 		int x = i-1;
@@ -91,11 +91,11 @@ public class Plateau {
 	}
 
 	/**
-	 * Renvoie true s'il existe un chemin de la case (i,j) Ã  la case (k,l)
-	 * @param i OrdonnÃ©e de la case d'origine.
+	 * Renvoie true s'il existe un chemin de la case (i,j) à la case (k,l)
+	 * @param i Ordonnée de la case d'origine.
 	 * @param j Abscisse de la case d'origine.
-	 * @param k OrdonnÃ©e de la case d'arrivÃ©e.
-	 * @param l Abscisse de la case d'arrivÃ©e.
+	 * @param k Ordonnée de la case d'arrivée.
+	 * @param l Abscisse de la case d'arrivée.
 	 * @return True s'il existe un chemin, false sinon.
 	 */
 	public boolean existeChemin(int i, int j, int k, int l){
@@ -114,9 +114,6 @@ public class Plateau {
 		}
 		casesVisitees.add(this.plateau[i][j]);
 		String[] directions = getDirections(i, j, k, l);
-		System.out.println("("+i+","+j+")");
-		String d = directions[0]+" "+directions[1]+" "+directions[2]+" "+directions[3];
-		System.out.println(d);
 		for (int n=0; n<4; n++){
 			int iprim = getI(i, directions[n]);
 			if (iprim!=-1){
@@ -203,7 +200,7 @@ public class Plateau {
 				return -1;
 			}
 		case "E":
-			if (j<this.plateau.length-1){ // on part du principe que le plateau est carrÃ©
+			if (j<this.plateau.length-1){ // on part du principe que le plateau est carré
 				return j+1;
 			} else {
 				return -1;
@@ -226,6 +223,47 @@ public class Plateau {
 	
 	public void deplace(int i, int j, int k, int l) throws PasDeCheminException, CaseOccupeeException, CaseVideException{
 		//TODO
+		if (this.plateau[i][j].estLibre()){
+			throw new CaseVideException(this.plateau[i][j]);
+		} else if (!this.plateau[k][l].estLibre()){
+			throw new CaseOccupeeException(this.plateau[k][l]);
+		}
+		if (existeChemin(i, j, k, l)){
+			this.plateau[k][l].pose(this.plateau[i][j].getCouleur());
+			this.plateau[i][j].libere();
+			this.casesLibres.remove(this.plateau[k][l]);
+			this.casesLibres.add(this.plateau[i][j]);
+		} else {
+			throw new PasDeCheminException(this.plateau[i][j], this.plateau[k][l]);
+		}
+	}
+	
+	public boolean existeCaseLibreAutour(int i, int j){
+		if (i>0 && this.plateau[i-1][j].estLibre()){
+			return true;
+		}
+		if (j>0 && this.plateau[i][j-1].estLibre()){
+			return true;
+		}
+		if (i<this.plateau.length-1 && this.plateau[i+1][j].estLibre()){
+			return true;
+		}
+		if (j<this.plateau[i].length-1 && this.plateau[i][j+1].estLibre()){
+			return true;
+		}
+		if (i>0 && j>0 && this.plateau[i-1][j-1].estLibre()){
+			return true;
+		}
+		if (i<this.plateau.length-1 && j<this.plateau[i].length-1 && this.plateau[i+1][j+1].estLibre()){
+			return true;
+		}
+		if (i>0 && j<this.plateau[i].length-1 && this.plateau[i-1][j+1].estLibre()){
+			return true;
+		}
+		if (i<this.plateau.length-1 && j>0 && this.plateau[i+1][j-1].estLibre()){
+			return true;
+		}
+		return false;
 	}
 	
 	public class Case{
@@ -286,8 +324,14 @@ public class Plateau {
 					System.out.print("[1]");
 				} else if (this.plateau[i][j].getCouleur().equals("white")){
 					System.out.print("[2]");
-				} else {
-					System.out.print("[*]");
+				} else if (this.plateau[i][j].getCouleur().equals("blue")){
+					System.out.print("[3]");
+				} else if (this.plateau[i][j].getCouleur().equals("red")){
+					System.out.print("[4]");
+				} else if (this.plateau[i][j].getCouleur().equals("yellow")){
+					System.out.print("[5]");
+				}else {
+					System.out.print("[?]");
 				}
 			}
 			System.out.println();
@@ -298,13 +342,13 @@ public class Plateau {
 		Plateau p = new Plateau(10);
 		HashMap<String, List<String>> h = new HashMap<String, List<String>>();
 		List<String> blanc = new ArrayList<String>();
-		blanc.add("white");
-		blanc.add("rainbow");
-		h.put("white",blanc);
+		blanc.add("WHITE");
+		blanc.add("RAINBOW");
+		h.put("WHITE",blanc);
 		List<String> noir = new ArrayList<String>();
-		noir.add("black");
-		noir.add("rainbow");
-		h.put("black", noir);
+		noir.add("BLACK");
+		noir.add("RAINBOW");
+		h.put("BLACK", noir);
 		p.setCodeCouleur(h);
 	}
 }

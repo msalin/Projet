@@ -1,12 +1,12 @@
 public class CaseOccupeeException extends Exception{
-  public final Case c;
+  public final Plateau.Case c;
   
-  public CaseOccupeeException(Case c){
+  public CaseOccupeeException(Plateau.Case c){
     this.c = c;
   }
   
   public String toString(){
-    return "La case "+c.toString()+" est occupÃ©e !";
+    return "La case "+c.toString()+" est occupée !";
   }
 
 }

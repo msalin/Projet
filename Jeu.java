@@ -5,7 +5,9 @@ public abstract class Jeu {
   
   public Jeu(Joueur j1, Joueur j2, Plateau p){
     this.joueur1 = j1;
+    this.joueur1.reset();
     this.joueur2 = j2;
+    this.joueur2.reset();
     this.plateau = p;
   }
   
@@ -15,3 +17,4 @@ public abstract class Jeu {
   
   public abstract void jouer();
 }
+

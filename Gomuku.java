@@ -13,9 +13,6 @@ public class Gomuku extends Jeu{
 	    l2.add("white");
 	    h.put("white",l2);
 	    this.plateau.setCodeCouleur(h);
-	    List<Plateau.Case> casesLibres = this.plateau.getCasesLibres();
-	    this.joueur1.setCoupsPossibles(casesLibres);
-	    this.joueur2.setCoupsPossibles(casesLibres);
 	  }
 	  
 	  public Gomuku(Joueur j1, int taille){
@@ -36,19 +33,19 @@ public class Gomuku extends Jeu{
 	      }
 	    }
 	    if (joueur1.getNbPoints()>joueur2.getNbPoints()){
-	    	System.out.println("Noir a gagnÃ©");
+	    	System.out.println("Noir a gagné");
 	    } else if (joueur2.getNbPoints()>joueur1.getNbPoints()){
-	    	System.out.println("Blanc a gagnÃ©");
+	    	System.out.println("Blanc a gagné");
 	    } else {
-	    	System.out.println("EgalitÃ©");
+	    	System.out.println("Egalité");
 	    }
 	  }
 	  
 	  private void tour(Joueur j, String couleur){
-	    int[] coordonnees = j.getCoup();
+	    Plateau.Case coordonnees = j.getCoup(this.plateau.getCasesLibres());
 	    try {
-	      this.plateau.pose(coordonnees[0], coordonnees[1], couleur); 
-	      int[] score = this.plateau.getAlign(coordonnees[0], coordonnees[1]);
+	      this.plateau.pose(coordonnees.i, coordonnees.j, couleur); 
+	      int[] score = this.plateau.getAlign(coordonnees.i, coordonnees.j);
 	      for (int i=0; i<score.length; i++){
 	       if (score[i]>=5){
 	        j.addScore(1); 
