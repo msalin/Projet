@@ -1,8 +1,8 @@
 public class PasDeCheminException extends Exception{
-  public final Case depart;
-  public final Case arrivee;
+  public final Plateau.Case depart;
+  public final Plateau.Case arrivee;
   
-  public PasDeCheminException(Case depart, Case arrivee){
+  public PasDeCheminException(Plateau.Case depart, Plateau.Case arrivee){
     this.depart = depart;
     this.arrivee = arrivee;
   }
