@@ -9,7 +9,7 @@ public class Plateau {
 	
 	public Plateau(int size){
 		this.plateau = new Case[size][size];
-		this.casesLibres = new ArrayList();
+		this.casesLibres = new ArrayList<Case>();
 		for (int i=0; i<size; i++){
 			for (int j=0; j<size; j++){
 				this.plateau[i][j] = new Case(i, j);
@@ -18,18 +18,25 @@ public class Plateau {
 		}
 	}
 	
+	public List<Case> getCasesLibres(){
+		return this.casesLibres;
+	}
+	public boolean existeCasesLibres(){
+		return this.casesLibres.size()>0;
+	}
+	
 	public void setCodeCouleur(HashMap<String, List<String>> h){
 		this.codeCouleur = h;
 	}
 	
 	/**
-	 * Renvoie le nombre de pions alignés pour chacune des 4 directions à partir de la case (i, j).
-	 * @param i Ordonnée de la case.
+	 * Renvoie le nombre de pions alignÃ©s pour chacune des 4 directions Ã  partir de la case (i, j).
+	 * @param i OrdonnÃ©e de la case.
 	 * @param j Abscisse de la case.
 	 * @return Un tableau d'entiers [Nord>Sud, Est>Ouest, Nord-Ouest>Sud-Est, Nord-Est>Sud-Ouest]  
 	 */
 	public int[] getAlign(int i, int j){
-		//TODO : améliorer la compléxité
+		//TODO : amÃ©liorer la complÃ©xitÃ©
 		int[] alignements = new int[4];
 		String c = this.plateau[i][j].getCouleur();
 		int x = i-1;
@@ -84,11 +91,11 @@ public class Plateau {
 	}
 
 	/**
-	 * Renvoie true s'il existe un chemin de la case (i,j) à la case (k,l)
-	 * @param i Ordonnée de la case d'origine.
+	 * Renvoie true s'il existe un chemin de la case (i,j) Ã  la case (k,l)
+	 * @param i OrdonnÃ©e de la case d'origine.
 	 * @param j Abscisse de la case d'origine.
-	 * @param k Ordonnée de la case d'arrivée.
-	 * @param l Abscisse de la case d'arrivée.
+	 * @param k OrdonnÃ©e de la case d'arrivÃ©e.
+	 * @param l Abscisse de la case d'arrivÃ©e.
 	 * @return True s'il existe un chemin, false sinon.
 	 */
 	public boolean existeChemin(int i, int j, int k, int l){
@@ -196,7 +203,7 @@ public class Plateau {
 				return -1;
 			}
 		case "E":
-			if (j<this.plateau.length-1){ // on part du principe que le plateau est carré
+			if (j<this.plateau.length-1){ // on part du principe que le plateau est carrÃ©
 				return j+1;
 			} else {
 				return -1;
@@ -208,6 +215,12 @@ public class Plateau {
 	
 	public void pose(int i, int j, String c) throws CaseOccupeeException{
 		//TODO
+		if (this.plateau[i][j].estLibre()){
+			this.plateau[i][j].pose(c);
+			this.casesLibres.remove(this.plateau[i][j]);
+		} else {
+			throw new CaseOccupeeException(this.plateau[i][j]);
+		}
 		
 	}
 	
@@ -231,6 +244,7 @@ public class Plateau {
 		 */
 		public void pose(String c){
 			//TODO
+			this.couleur = c;
 		}
 		
 		/**
@@ -238,6 +252,7 @@ public class Plateau {
 		 */
 		public void libere(){
 			//TODO
+			this.couleur = "";
 		}
 		
 		/**
@@ -255,6 +270,10 @@ public class Plateau {
 		public String getCouleur(){
 			return this.couleur;
 		}
+		
+		public String toString(){
+			return "("+this.i+", "+this.j+")";
+		}
 	}
 	
 	//fonction test toute pourrie
@@ -263,9 +282,9 @@ public class Plateau {
 			for (int j=0; j<this.plateau[i].length; j++){
 				if (this.plateau[i][j].estLibre()){
 					System.out.print("[ ]");
-				} else if (this.plateau[i][j].getCouleur().equals("BLACK")){
+				} else if (this.plateau[i][j].getCouleur().equals("black")){
 					System.out.print("[1]");
-				} else if (this.plateau[i][j].getCouleur().equals("WHITE")){
+				} else if (this.plateau[i][j].getCouleur().equals("white")){
 					System.out.print("[2]");
 				} else {
 					System.out.print("[*]");
@@ -279,13 +298,13 @@ public class Plateau {
 		Plateau p = new Plateau(10);
 		HashMap<String, List<String>> h = new HashMap<String, List<String>>();
 		List<String> blanc = new ArrayList<String>();
-		blanc.add("WHITE");
-		blanc.add("RAINBOW");
-		h.put("WHITE",blanc);
+		blanc.add("white");
+		blanc.add("rainbow");
+		h.put("white",blanc);
 		List<String> noir = new ArrayList<String>();
-		noir.add("BLACK");
-		noir.add("RAINBOW");
-		h.put("BLACK", noir);
+		noir.add("black");
+		noir.add("rainbow");
+		h.put("black", noir);
 		p.setCodeCouleur(h);
 	}
 }
