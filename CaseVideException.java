@@ -1,7 +1,7 @@
 public class CaseVideException extends Exception{
-  public final Case c;
+  public final Plateau.Case c;
   
-  public CaseVideException(Case c){
+  public CaseVideException(Plateau.Case c){
     this.c = c;
   }
   
