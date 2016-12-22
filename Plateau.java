@@ -29,64 +29,203 @@ public class Plateau {
 		this.codeCouleur = h;
 	}
 	
+	public int[] getAlign(int i, int j){
+		return getAlign(i, j, "");
+	}
+	
+	/**
+	 * Renvoie le nombre de pions align�s au nord
+	 * @param i
+	 * @param j
+	 * @param special
+	 * @return
+	 */
+	private int getAlignN(int i, int j, String special, String[] couleurs){
+		if (i==0){
+			return 1;
+		}
+		String c = this.plateau[i][j].getCouleur();
+		int x = i-1;
+		int align = 1;
+		while (x>=0 && this.codeCouleur.get(c).contains(this.plateau[x][j].getCouleur())){
+			if (c.equals(special) && !this.plateau[x][j].getCouleur().equals(special)){
+				c = this.plateau[x][j].getCouleur();
+			}
+			align++;
+			x--;
+		}
+		couleurs[0] = c;
+		return align;
+	}
+	
+	private int getAlignS(int i, int j, String special, String[] couleurs){
+		if (i==this.plateau.length-1){
+			return 1;
+		}
+		String c = this.plateau[i][j].getCouleur();
+		int x = i+1;
+		int align = 1;
+		while (x<=this.plateau.length-1 && this.codeCouleur.get(c).contains(this.plateau[x][j].getCouleur())){
+			if (c.equals(special) && !this.plateau[x][j].getCouleur().equals(special)){
+				c = this.plateau[x][j].getCouleur();
+			}
+			align++;
+			x++;
+		}
+		couleurs[1] = c;
+		return align;
+	}
+	
+	private int getAlignW(int i, int j, String special, String[] couleurs){
+		if (j==0){
+			return 1;
+		}
+		String c = this.plateau[i][j].getCouleur();
+		int y = j-1;
+		int align = 1;
+		while (y>=0 && this.codeCouleur.get(c).contains(this.plateau[i][y].getCouleur())){
+			if (c.equals(special) && !this.plateau[i][y].getCouleur().equals(special)){
+				c = this.plateau[i][y].getCouleur();
+			}
+			align++;
+			y--;
+		}
+		couleurs[2] = c;
+		return align;
+	}
+	
+	private int getAlignE(int i, int j, String special, String[] couleurs){
+		if (j==this.plateau[i].length-1){
+			return 1;
+		}
+		String c = this.plateau[i][j].getCouleur();
+		int y = j+1;
+		int align = 1;
+		while (y<=this.plateau[i].length-1 && this.codeCouleur.get(c).contains(this.plateau[i][y].getCouleur())){
+			if (c.equals(special) && !this.plateau[i][y].getCouleur().equals(special)){
+				c = this.plateau[i][y].getCouleur();
+			}
+			align++;
+			y++;
+		}
+		couleurs[3] = c;
+		return align;
+	}
+
+	private int getAlignNW(int i, int j, String special, String[] couleurs){
+		if (i==0 || j==0){
+			return 1;
+		}
+		String c = this.plateau[i][j].getCouleur();
+		int x = i-1;
+		int y = j-1;
+		int align = 1;
+		while (x>=0 && y>=0 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
+			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
+				c = this.plateau[x][y].getCouleur();
+			}
+			align++;
+			x--;
+			y--;
+		}
+		couleurs[4] = c;
+		return align;
+	}
+	
+	private int getAlignNE(int i, int j, String special, String[] couleurs){
+		if (i==0 || j==this.plateau[i].length-1){
+			return 1;
+		}
+		String c = this.plateau[i][j].getCouleur();
+		int x = i-1;
+		int y = j+1;
+		int align = 1;
+		while (x>=0 && y<=this.plateau[i].length-1 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
+			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
+				c = this.plateau[x][y].getCouleur();
+			}
+			align++;
+			x--;
+			y++;
+		}
+		couleurs[5] = c;
+		return align;
+	}
+	
+	private int getAlignSW(int i, int j, String special, String[] couleurs){
+		if (i==this.plateau.length-1 || j==0){
+			return 1;
+		}
+		String c = this.plateau[i][j].getCouleur();
+		int x = i+1;
+		int y = j-1;
+		int align = 1;
+		while (x<=this.plateau.length-1 && j>=0 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
+			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
+				c = this.plateau[x][y].getCouleur();
+			}
+			align++;
+			x++;
+			y--;
+		}
+		couleurs[6] = c;
+		return align;
+	}
+	
+	private int getAlignSE(int i, int j, String special, String[] couleurs){
+		if (i==this.plateau.length-1 || j==this.plateau[i].length-1){
+			return 1;
+		}
+		String c = this.plateau[i][j].getCouleur();
+		int x = i+1;
+		int y = j+1;
+		int align = 1;
+		while (x<=this.plateau.length-1 && j<=this.plateau[x].length-1 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
+			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
+				c = this.plateau[x][y].getCouleur();
+			}
+			align++;
+			x++;
+			y++;
+		}
+		couleurs[7] = c;
+		return align;
+	}
+	
 	/**
 	 * Renvoie le nombre de pions alignés pour chacune des 4 directions à partir de la case (i, j).
 	 * @param i Ordonnée de la case.
 	 * @param j Abscisse de la case.
 	 * @return Un tableau d'entiers [Nord>Sud, Est>Ouest, Nord-Ouest>Sud-Est, Nord-Est>Sud-Ouest]  
 	 */
-	public int[] getAlign(int i, int j){
+	public int[] getAlign(int i, int j, String special){
 		//TODO : améliorer la compléxité
-		int[] alignements = new int[4];
-		String c = this.plateau[i][j].getCouleur();
-		int x = i-1;
-		while (x>=0 && this.codeCouleur.get(c).contains(this.plateau[x][j].getCouleur())){
-				alignements[0] += 1;
-				x--;
+		String[] couleurs = new String[8];
+		int[] alignements;
+		if (this.plateau[i][j].getCouleur().equals(special)){
+			alignements = new int[8];
+			alignements[0] = getAlignN(i, j, special, couleurs);
+			alignements[1] = getAlignS(i, j, special, couleurs);
+			alignements[2] = getAlignW(i, j, special, couleurs);
+			alignements[3] = getAlignE(i, j, special, couleurs);
+			alignements[4] = getAlignNW(i, j, special, couleurs);
+			alignements[5] = getAlignNE(i, j, special, couleurs);
+			alignements[6] = getAlignSW(i, j, special, couleurs);
+			alignements[7] = getAlignSE(i, j, special, couleurs);
+			for (int n=0; n<8; n+=2){
+				if (codeCouleur.get(couleurs[n]).contains(couleurs[n+1])){
+					alignements[n] += alignements[n+1]-1;
+					alignements[n+1] = 0;
+				}
+			}
+		} else {
+			alignements = new int[4];
+			alignements[0] = getAlignN(i,j,special, couleurs)+getAlignS(i, j, special, couleurs)-1;
+			alignements[1] = getAlignE(i, j, special, couleurs)+getAlignW(i, j, special, couleurs)-1;
+			alignements[2] = getAlignNW(i, j, special, couleurs)+getAlignSE(i, j, special, couleurs)-1;
+			alignements[3] = getAlignNE(i, j, special, couleurs)+getAlignSW(i, j, special, couleurs)-1;
 		}
-		x = i+1;
-		while (x<this.plateau.length && this.codeCouleur.get(c).contains(this.plateau[x][j].getCouleur())){
-			alignements[0] += 1;
-			x++;
-		}
-		x = j-1;
-		while (x>=0 && this.codeCouleur.get(c).contains(this.plateau[i][x].getCouleur())){
-			alignements[1] += 1;
-			x--;
-		}
-		x = j+1;
-		while (x<this.plateau[i].length && this.codeCouleur.get(c).contains(this.plateau[i][x].getCouleur())){
-			alignements[1] += 1;
-			x++;
-		}
-		x = i-1;
-		int y = j-1;
-		while (x>=0 && y>=0 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
-			alignements[2] += 1;
-			x--;
-			y--;
-		}
-		x = i-1;
-		y = j+1;
-		while (x>=0 && y<this.plateau[x].length && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
-			alignements[3] += 1;
-			x--;
-			y++;
-		}
-		x = i+1;
-		y = j+1;
-		while (x<this.plateau.length && y<this.plateau[x].length && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
-			alignements[2] += 1;
-			x++;
-			y++;
-		}
-		x = i+1;
-		y = j-1;
-		while (x<this.plateau.length && y>=0 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
-			alignements[3] += 1;
-			x++;
-			y--;
-		}
+		
 		return alignements;
 	}
 

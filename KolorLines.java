@@ -81,7 +81,7 @@ public class KolorLines extends Jeu {
   }
   
   public void calculScore(Plateau.Case c){
-	  int[] score = this.plateau.getAlign(c.i, c.j);
+	  int[] score = this.plateau.getAlign(c.i, c.j, "rainbow");
 	  for (int i=0; i<score.length; i++){
 		  if (score[i]>=5){
 			  this.joueur1.addScore(score[i]);
