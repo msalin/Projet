@@ -37,12 +37,16 @@ public class Plateau {
 		return this.casesLibres.size()>0;
 	}
 	
+	public int getNbCasesLibres(){
+		return this.casesLibres.size();
+	}
+	
 	public void setCodeCouleur(HashMap<String, List<String>> h){
 		this.codeCouleur = h;
 	}
 	
 	public int[] getAlign(int i, int j){
-		return getAlign(i, j, "");
+		return getAlign(i, j, "", new String[8], new ArrayList<List<Case>>());
 	}
 	
 	/**
@@ -52,83 +56,106 @@ public class Plateau {
 	 * @param special
 	 * @return
 	 */
-	private int getAlignN(int i, int j, String special, String[] couleurs){
+	private int getAlignN(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
+		List<Case> cases = new ArrayList<Case>();
+		cases.add(this.plateau[i][j]);
 		if (i==0){
 			return 1;
 		}
 		String c = this.plateau[i][j].getCouleur();
+		System.out.println("couleur n = "+c);
 		int x = i-1;
 		int align = 1;
 		while (x>=0 && this.codeCouleur.get(c).contains(this.plateau[x][j].getCouleur())){
 			if (c.equals(special) && !this.plateau[x][j].getCouleur().equals(special)){
 				c = this.plateau[x][j].getCouleur();
 			}
+			cases.add(this.plateau[x][j]);
 			align++;
 			x--;
 		}
 		couleurs[0] = c;
+		casesVisitees.add(cases);
 		return align;
 	}
 	
-	private int getAlignS(int i, int j, String special, String[] couleurs){
+	private int getAlignS(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
+		List<Case> cases = new ArrayList<Case>();
+		cases.add(this.plateau[i][j]);
 		if (i==this.plateau.length-1){
 			return 1;
 		}
 		String c = this.plateau[i][j].getCouleur();
+		System.out.println("couleur s = "+c);
 		int x = i+1;
 		int align = 1;
 		while (x<=this.plateau.length-1 && this.codeCouleur.get(c).contains(this.plateau[x][j].getCouleur())){
 			if (c.equals(special) && !this.plateau[x][j].getCouleur().equals(special)){
 				c = this.plateau[x][j].getCouleur();
 			}
+			cases.add(this.plateau[x][j]);
 			align++;
 			x++;
 		}
 		couleurs[1] = c;
+		casesVisitees.add(cases);
 		return align;
 	}
 	
-	private int getAlignW(int i, int j, String special, String[] couleurs){
+	private int getAlignW(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
+		List<Case> cases = new ArrayList<Case>();
+		cases.add(this.plateau[i][j]);
 		if (j==0){
 			return 1;
 		}
 		String c = this.plateau[i][j].getCouleur();
+		System.out.println("couleur w = "+c);
 		int y = j-1;
 		int align = 1;
 		while (y>=0 && this.codeCouleur.get(c).contains(this.plateau[i][y].getCouleur())){
 			if (c.equals(special) && !this.plateau[i][y].getCouleur().equals(special)){
 				c = this.plateau[i][y].getCouleur();
 			}
+			cases.add(this.plateau[i][y]);
 			align++;
 			y--;
 		}
+		casesVisitees.add(cases);
 		couleurs[2] = c;
 		return align;
 	}
 	
-	private int getAlignE(int i, int j, String special, String[] couleurs){
+	private int getAlignE(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
+		List<Case> cases = new ArrayList<Case>();
+		cases.add(this.plateau[i][j]);
 		if (j==this.plateau[i].length-1){
 			return 1;
 		}
 		String c = this.plateau[i][j].getCouleur();
+		System.out.println("couleur E = "+c);
 		int y = j+1;
 		int align = 1;
 		while (y<=this.plateau[i].length-1 && this.codeCouleur.get(c).contains(this.plateau[i][y].getCouleur())){
 			if (c.equals(special) && !this.plateau[i][y].getCouleur().equals(special)){
 				c = this.plateau[i][y].getCouleur();
 			}
+			cases.add(this.plateau[i][y]);
 			align++;
 			y++;
 		}
+		casesVisitees.add(cases);
 		couleurs[3] = c;
 		return align;
 	}
 
-	private int getAlignNW(int i, int j, String special, String[] couleurs){
+	private int getAlignNW(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
+		List<Case> cases = new ArrayList<Case>();
+		cases.add(this.plateau[i][j]);
 		if (i==0 || j==0){
 			return 1;
 		}
 		String c = this.plateau[i][j].getCouleur();
+		System.out.println("couleur NW = "+c);
 		int x = i-1;
 		int y = j-1;
 		int align = 1;
@@ -136,70 +163,90 @@ public class Plateau {
 			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
 				c = this.plateau[x][y].getCouleur();
 			}
+			cases.add(this.plateau[x][y]);
 			align++;
 			x--;
 			y--;
 		}
+		casesVisitees.add(cases);
 		couleurs[4] = c;
 		return align;
 	}
 	
-	private int getAlignNE(int i, int j, String special, String[] couleurs){
+	private int getAlignNE(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
+		List<Case> cases = new ArrayList<Case>();
+		cases.add(this.plateau[i][j]);
 		if (i==0 || j==this.plateau[i].length-1){
 			return 1;
 		}
 		String c = this.plateau[i][j].getCouleur();
+		System.out.println("couleur NE = "+c);
 		int x = i-1;
 		int y = j+1;
 		int align = 1;
 		while (x>=0 && y<=this.plateau[i].length-1 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
 			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
 				c = this.plateau[x][y].getCouleur();
+				System.out.println("nouvelle couleur de NE "+c);
 			}
+			cases.add(this.plateau[x][y]);
 			align++;
 			x--;
 			y++;
 		}
+		casesVisitees.add(cases);
 		couleurs[5] = c;
 		return align;
 	}
 	
-	private int getAlignSW(int i, int j, String special, String[] couleurs){
+	private int getAlignSW(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
+		List<Case> cases = new ArrayList<Case>();
+		cases.add(this.plateau[i][j]);
 		if (i==this.plateau.length-1 || j==0){
 			return 1;
 		}
 		String c = this.plateau[i][j].getCouleur();
+		System.out.println("couleur SW = "+c);
 		int x = i+1;
 		int y = j-1;
 		int align = 1;
 		while (x<=this.plateau.length-1 && y>=0 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
 			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
 				c = this.plateau[x][y].getCouleur();
+				System.out.println("nouvelle couleur SW = "+c);
 			}
+			cases.add(this.plateau[x][y]);
 			align++;
 			x++;
 			y--;
 		}
+		casesVisitees.add(cases);
 		couleurs[6] = c;
 		return align;
 	}
 	
-	private int getAlignSE(int i, int j, String special, String[] couleurs){
+	private int getAlignSE(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
+		List<Case> cases = new ArrayList<Case>();
+		cases.add(this.plateau[i][j]);
 		if (i==this.plateau.length-1 || j==this.plateau[i].length-1){
 			return 1;
 		}
 		String c = this.plateau[i][j].getCouleur();
+		System.out.println("couleur SE = "+c);
 		int x = i+1;
 		int y = j+1;
 		int align = 1;
 		while (x<=this.plateau.length-1 && y<=this.plateau[x].length-1 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
 			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
 				c = this.plateau[x][y].getCouleur();
+				System.out.println("nouvelle couleur SE = "+c);
 			}
+			cases.add(this.plateau[x][y]);
 			align++;
 			x++;
 			y++;
 		}
+		casesVisitees.add(cases);
 		couleurs[7] = c;
 		return align;
 	}
@@ -210,37 +257,41 @@ public class Plateau {
 	 * @param j Abscisse de la case.
 	 * @return Un tableau d'entiers [Nord>Sud, Est>Ouest, Nord-Ouest>Sud-Est, Nord-Est>Sud-Ouest]  
 	 */
-	public int[] getAlign(int i, int j, String special){
+	public int[] getAlign(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
 		//TODO : améliorer la compléxité
-		String[] couleurs = new String[8];
-		int[] alignements;
-		if (this.plateau[i][j].getCouleur().equals(special)){
-			alignements = new int[8];
-			alignements[0] = getAlignN(i, j, special, couleurs);
-			alignements[1] = getAlignS(i, j, special, couleurs);
-			alignements[2] = getAlignW(i, j, special, couleurs);
-			alignements[3] = getAlignE(i, j, special, couleurs);
-			alignements[4] = getAlignNW(i, j, special, couleurs);
-			alignements[5] = getAlignNE(i, j, special, couleurs);
-			alignements[6] = getAlignSW(i, j, special, couleurs);
-			alignements[7] = getAlignSE(i, j, special, couleurs);
-			for (int n=0; n<8; n+=2){
-				if (codeCouleur.get(couleurs[n]).contains(couleurs[n+1])){
-					alignements[n] += alignements[n+1]-1;
-					alignements[n+1] = 0;
-				}
-			}
-		} else {
-			alignements = new int[4];
-			alignements[0] = getAlignN(i,j,special, couleurs)+getAlignS(i, j, special, couleurs)-1;
-			alignements[1] = getAlignE(i, j, special, couleurs)+getAlignW(i, j, special, couleurs)-1;
-			alignements[2] = getAlignNW(i, j, special, couleurs)+getAlignSE(i, j, special, couleurs)-1;
-			alignements[3] = getAlignNE(i, j, special, couleurs)+getAlignSW(i, j, special, couleurs)-1;
+		System.out.println(this.plateau[i][j].toString());
+		for (int n=0; n<couleurs.length; n++){
+			couleurs[n] = this.plateau[i][j].getCouleur();
 		}
-		
+		int[] alignements;
+		alignements = new int[8];
+		alignements[0] = getAlignN(i, j, special, couleurs, casesVisitees);
+		alignements[1] = getAlignS(i, j, special, couleurs, casesVisitees);
+		alignements[2] = getAlignW(i, j, special, couleurs, casesVisitees);
+		alignements[3] = getAlignE(i, j, special, couleurs, casesVisitees);
+		alignements[4] = getAlignNW(i, j, special, couleurs, casesVisitees);
+		alignements[5] = getAlignNE(i, j, special, couleurs, casesVisitees);
+		alignements[6] = getAlignSW(i, j, special, couleurs, casesVisitees);
+		alignements[7] = getAlignSE(i, j, special, couleurs, casesVisitees);
+		/**
+		for (int n=7; n>=1; n-=2){
+			if (codeCouleur.get(couleurs[n]).contains(couleurs[n-1])){
+				alignements[n-1] += alignements[n]-1;
+				alignements[n] = 0;
+				List<Case> temp = casesVisitees.get(n);
+				casesVisitees.remove(n);
+				casesVisitees.get(n-1).addAll(temp);	
+			} 
+		}
+		**/
 		return alignements;
 	}
 
+	public void libere(int i, int j){
+		this.plateau[i][j].libere();
+		this.casesLibres.add(this.plateau[i][j]);
+	}
+	
 	/**
 	 * Renvoie true s'il existe un chemin de la case (i,j) à la case (k,l)
 	 * @param i Ordonnée de la case d'origine.
@@ -531,13 +582,32 @@ public class Plateau {
 		Plateau p = new Plateau(10);
 		HashMap<String, List<String>> h = new HashMap<String, List<String>>();
 		List<String> blanc = new ArrayList<String>();
-		blanc.add("WHITE");
-		blanc.add("RAINBOW");
-		h.put("WHITE",blanc);
+		blanc.add("white");
+		blanc.add("rainbow");
+		h.put("white",blanc);
 		List<String> noir = new ArrayList<String>();
-		noir.add("BLACK");
-		noir.add("RAINBOW");
-		h.put("BLACK", noir);
+		noir.add("black");
+		noir.add("rainbow");
+		h.put("black", noir);
+		List<String> arc = new ArrayList<String>();
+		arc.add("white");
+		arc.add("rainbow");
+		arc.add("black");
+		h.put("rainbow", arc);
 		p.setCodeCouleur(h);
+		try {
+			p.pose(5, 5, "rainbow");
+			p.pose(5, 4, "white");
+			p.pose(5, 6, "white");
+			p.pose(5, 7, "white");
+			p.pose(5, 8, "white");
+			p.pose(4, 4, "white");
+			p.pose(6, 6, "white");
+			p.pose(4, 5, "black");
+			p.pose(6, 5, "white");
+			p.getAlign(5, 5, "rainbow", new String[8], new ArrayList<List<Case>>());
+		} catch (CaseOccupeeException e){
+			
+		}
 	}
 }

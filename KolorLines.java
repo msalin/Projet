@@ -2,9 +2,13 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import javax.swing.JLabel;
 public class KolorLines extends Jeu {
   
   private List<String> prochainsCoups;
+  private Plateau.Case pionSelectionne;
+  private List<Plateau.Case> casesDepart;
   
   public KolorLines(Joueur j1, int taille){
     super(j1, new JoueurIA(), new Plateau(taille));
@@ -20,46 +24,48 @@ public class KolorLines extends Jeu {
       lrainbow.add(couleurs[i]);
     }
     h.put("rainbow", lrainbow);
+    h.put("", new ArrayList<String>());
     this.plateau.setCodeCouleur(h);
-    this.setProchainsCoups(taille*taille);
+    this.prochainsCoups = this.creerProchainsCoups(taille*taille);
     
     this.frame.setTitle("KolorLines");
-    this.scores.setName(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+" pts");
+    this.scores.add(new JLabel(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+" points"));
     this.frame.setVisible(true);
     
   }
   
-  private void setProchainsCoups(int nbCases){
-	  this.prochainsCoups = new ArrayList<String>();
+  private List<String> creerProchainsCoups(int nbCases){
+	  List<String> pc= new ArrayList<String>();
 	  Random r = new Random();
 	  for (int i=0; i<nbCases; i++){
 		  int n = r.nextInt(100);
 		  if (n<5){
-			  this.prochainsCoups.add("rainbow");
+			  pc.add("rainbow");
 		  } else if (n<24){
-			  this.prochainsCoups.add("black");
+			  pc.add("black");
 		  } else if (n<43){
-			  this.prochainsCoups.add("white");
+			  pc.add("white");
 		  } else if (n<62){
-			  this.prochainsCoups.add("blue");
+			  pc.add("blue");
 		  } else if (n<81){
-			  this.prochainsCoups.add("red");
+			  pc.add("red");
 		  } else {
-			  this.prochainsCoups.add("yellow");
+			  pc.add("yellow");
 		  }
 	  }
+	  return pc;
   }
   
   public void jouer(){
 	  
 	  while (this.plateau.existeCasesLibres()){
-		  int nbCoups = 0;
-		  if (this.prochainsCoups.size()>=3){
-			  nbCoups = 3;
-		  } else if (this.prochainsCoups.size()==2){
-			  nbCoups = 2;
-		  } else {
-			  nbCoups = 1;
+		  int nbCases = this.plateau.getNbCasesLibres();
+		  if (this.prochainsCoups.size()<=3){
+			  this.prochainsCoups.addAll(this.creerProchainsCoups(nbCases));
+		  }
+		  int nbCoups = 3;
+		  if (nbCases<3){
+			  nbCoups = nbCases;
 		  }
 		  List<Plateau.Case> cases = tourOrdinateur(nbCoups);
 		  afficherPlateau();
@@ -85,12 +91,43 @@ public class KolorLines extends Jeu {
   }
   
   public void calculScore(Plateau.Case c){
-	  int[] score = this.plateau.getAlign(c.i, c.j, "rainbow");
+	  List<List<Plateau.Case>> casesVisitees = new ArrayList<List<Plateau.Case>>();
+	  String[] couleurs = new String[8];
+	  int[] score = this.plateau.getAlign(c.i, c.j, "rainbow", couleurs, casesVisitees);
+	  /**
 	  for (int i=0; i<score.length; i++){
 		  if (score[i]>=5){
 			  this.joueur1.addScore(score[i]);
+			  for (Plateau.Case caseSuppr : casesVisitees.get(i)){
+				  this.plateau.libere(caseSuppr.i, caseSuppr.j);
+			  }
 		  }
 	  }
+	  **/
+	  for (int i=0; i<8; i++){
+		  System.out.println(couleurs[i]+" "+score[i]);
+	  }
+	  for (int n=0; n<8; n+=2){
+			if (couleurs[n].equals(couleurs[n+1]) || couleurs[n].equals("rainbow") || couleurs[n+1].equals("rainbow")){
+				int s = score[n]+score[n+1]-1;
+				if (s >=5){
+					this.joueur1.addScore(s);
+					for (Plateau.Case caseSuppr : casesVisitees.get(n)){
+						  this.plateau.libere(caseSuppr.i, caseSuppr.j);
+					}
+					for (Plateau.Case caseSuppr : casesVisitees.get(n+1)){
+						  this.plateau.libere(caseSuppr.i, caseSuppr.j);
+					}
+				}	
+			} 
+	  }
+	  JLabel text = (JLabel) this.scores.getComponent(0);
+      this.scores.remove(text);
+      this.scores.add(new JLabel(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+" points"));
+  }
+  
+  public void launch(){
+	  this.casesDepart = tourOrdinateur(3);
   }
   
   public void afficherPlateau(){
@@ -128,25 +165,76 @@ public class KolorLines extends Jeu {
 		  cases.add(c);
 		  try {
 			  this.plateau.pose(c.i, c.j, couleur);
+			  this.frame.setVisible(true);
 		  } catch (CaseOccupeeException e){
 			  System.out.println(e);
+			  afficheMessage(e.toString());
 		  }
 	  }
 	  return cases;
   }
   
-  public void actionAFaire(Plateau.Case c){
-	  
+  private boolean canStart(){
+	  if (! this.plateau.existeCasesLibres()){
+		  return false;
+	  }
+	  boolean libre = false;
+	  for (Plateau.Case c : this.casesDepart){
+		  if (this.plateau.existeCaseLibreAutour(c.i, c.j)){
+			  libre = true;
+		  }
+	  }
+	  return libre;
+  }
+  
+  public synchronized void actionAFaire(Plateau.Case c){
+	  if (! this.fini){
+		  if (this.pionSelectionne == null){
+				  this.pionSelectionne = c;
+		  } else {
+			  try {
+				  this.plateau.deplace(this.pionSelectionne.i, this.pionSelectionne.j, c.i, c.j);
+				  this.frame.setVisible(true);
+				  this.casesDepart.remove(this.pionSelectionne);
+				  this.casesDepart.add(c);
+				  for (Plateau.Case pion : casesDepart){
+					  calculScore(pion);
+				  }
+				  int nbCases = this.plateau.getNbCasesLibres();
+				  if (this.prochainsCoups.size()<=3){
+					  this.prochainsCoups.addAll(this.creerProchainsCoups(nbCases));
+				  }
+				  int nbCoups = 3;
+				  if (nbCases<3){
+					  nbCoups = nbCases;
+				  }
+				  this.casesDepart = tourOrdinateur(nbCoups);
+				  this.pionSelectionne = null;
+				  if (!this.canStart()){
+					  this.fini = true;
+					  afficheMessage("La partie est finie");
+				  }
+			  } catch (PasDeCheminException e){
+				  System.out.println(e);
+				  this.pionSelectionne = null;
+				  this.afficheMessage(e.toString());
+			  } catch (CaseOccupeeException e){
+				  System.out.println(e);
+				  this.pionSelectionne = null;
+				  this.afficheMessage(e.toString());
+			  } catch (CaseVideException e){
+				  System.out.println(e);
+				  this.pionSelectionne = null;
+				  this.afficheMessage(e.toString());
+				  
+			  }
+		  }
+	  }
   }
   
   public static void main(String[] args){
-	  KolorLines kl = new KolorLines(new JoueurHumain("Toto"), 3);
-	  try{
-		  kl.plateau.pose(0, 0, "red");
-		  kl.plateau.pose(0, 1, "yellow");
-	  } catch (CaseOccupeeException e){
-		  
-	  }
+	  KolorLines kl = new KolorLines(new JoueurHumain("Toto"), 10);
+	  kl.launch();
   }
 
 }

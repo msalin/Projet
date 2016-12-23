@@ -1,5 +1,6 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import java.awt.Dimension;
 import javax.swing.JLabel;
@@ -9,6 +10,7 @@ public abstract class Jeu {
   protected Plateau plateau;
   protected JFrame frame;
   protected JPanel scores;
+  protected boolean fini;
   
   public Jeu(Joueur j1, Joueur j2, Plateau p){
     this.joueur1 = j1;
@@ -17,6 +19,7 @@ public abstract class Jeu {
     this.joueur2.reset();
     this.plateau = p;
     p.setJeu(this);
+    this.fini = false;
     this.frame = new JFrame();
     this.frame.setLayout(new BoxLayout(this.frame.getContentPane(),BoxLayout.PAGE_AXIS));
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,12 +29,14 @@ public abstract class Jeu {
     this.frame.add(this.scores);
     this.frame.add(this.plateau.panneau);
     this.frame.setSize(new Dimension(1000, 500));
+    this.frame.setLocationRelativeTo(null);
   }
   
   public void afficheMessage(String m){
 	  JFrame message = new JFrame();
 	  message.add(new JLabel(m));
-	  message.setSize(100, 100);
+	  message.setSize(500, 100);
+	  message.setLocationRelativeTo(this.frame);
 	  message.setVisible(true);
   }
   

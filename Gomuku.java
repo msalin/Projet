@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 public class Gomuku extends Jeu{
 	private boolean joueur1plays;
-	private boolean fini;
 	public Gomuku(Joueur j1, Joueur j2, int taille){
 	    super(j1, j2, new Plateau(taille));
 	    HashMap<String, List<String>> h = new HashMap<String, List<String>>();
@@ -15,13 +15,13 @@ public class Gomuku extends Jeu{
 	    List<String> l2 = new ArrayList<String>();
 	    l2.add("white");
 	    h.put("white",l2);
+	    h.put("", new ArrayList<String>());
 	    this.plateau.setCodeCouleur(h);
 	    
 	    this.frame.setTitle("Gomuku");
-	    this.scores.add(new JTextField(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+"   "+this.joueur2.nom+" : "+this.joueur2.getNbPoints()));
+	    this.scores.add(new JLabel(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+"   "+this.joueur2.nom+" : "+this.joueur2.getNbPoints()));
 	    this.frame.setVisible(true);
 	    this.joueur1plays = true;
-	    this.fini = false;
 	  }
 	  
 	  public Gomuku(Joueur j1, int taille){
@@ -75,9 +75,9 @@ public class Gomuku extends Jeu{
 	        j.addScore(1); 
 	       }
 	      }
-	      JTextField text = (JTextField) this.scores.getComponent(0);
+	      JLabel text = (JLabel) this.scores.getComponent(0);
 	      this.scores.remove(text);
-	      text = new JTextField(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+"   "+this.joueur2.nom+" : "+this.joueur2.getNbPoints());
+	      text = new JLabel(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+"   "+this.joueur2.nom+" : "+this.joueur2.getNbPoints());
 	      this.scores.add(text);
 	    } catch (CaseOccupeeException e){
 	      System.out.println(e);
@@ -94,9 +94,9 @@ public class Gomuku extends Jeu{
 					  joueur.addScore(1); 
 				  }
 			  }
-			  JTextField text = (JTextField) this.scores.getComponent(0);
+			  JLabel text = (JLabel) this.scores.getComponent(0);
 			  this.scores.remove(text);
-			  text = new JTextField(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+"   "+this.joueur2.nom+" : "+this.joueur2.getNbPoints());
+			  text = new JLabel(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+"   "+this.joueur2.nom+" : "+this.joueur2.getNbPoints());
 			  this.scores.add(text);
 			  return true;
 		  } catch (CaseOccupeeException e){
@@ -120,7 +120,7 @@ public class Gomuku extends Jeu{
 	  }
 	  
 	  
-	  public synchronized void actionAFaire(Plateau.Case c){
+	  public void actionAFaire(Plateau.Case c){
 		System.out.println(c.toString());
 		if (! this.fini){
 			if (this.joueur1plays){
