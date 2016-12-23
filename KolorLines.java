@@ -23,6 +23,10 @@ public class KolorLines extends Jeu {
     this.plateau.setCodeCouleur(h);
     this.setProchainsCoups(taille*taille);
     
+    this.frame.setTitle("KolorLines");
+    this.scores.setName(this.joueur1.nom+" : "+this.joueur1.getNbPoints()+" pts");
+    this.frame.setVisible(true);
+    
   }
   
   private void setProchainsCoups(int nbCases){
@@ -131,9 +135,18 @@ public class KolorLines extends Jeu {
 	  return cases;
   }
   
+  public void actionAFaire(Plateau.Case c){
+	  
+  }
+  
   public static void main(String[] args){
 	  KolorLines kl = new KolorLines(new JoueurHumain("Toto"), 3);
-	  kl.jouer();
+	  try{
+		  kl.plateau.pose(0, 0, "red");
+		  kl.plateau.pose(0, 1, "yellow");
+	  } catch (CaseOccupeeException e){
+		  
+	  }
   }
 
 }

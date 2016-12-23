@@ -1,22 +1,34 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
+import java.awt.GridLayout;
+import java.awt.event.*;
 public class Plateau {
 
 	final Case[][] plateau;
 	public HashMap<String, List<String>> codeCouleur;
 	private List<Case> casesLibres;
-	
+	public JPanel panneau;
+	private Jeu jeu;
 	public Plateau(int size){
 		this.plateau = new Case[size][size];
 		this.casesLibres = new ArrayList<Case>();
+		this.panneau = new JPanel(new GridLayout(size, size));
 		for (int i=0; i<size; i++){
 			for (int j=0; j<size; j++){
 				this.plateau[i][j] = new Case(i, j);
 				this.casesLibres.add(this.plateau[i][j]);
+				this.panneau.add(this.plateau[i][j].bouton);
 			}
 		}
 	}
+	 public void setJeu(Jeu jeu){
+		 this.jeu = jeu;
+	 }
 	
 	public List<Case> getCasesLibres(){
 		return this.casesLibres;
@@ -160,7 +172,7 @@ public class Plateau {
 		int x = i+1;
 		int y = j-1;
 		int align = 1;
-		while (x<=this.plateau.length-1 && j>=0 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
+		while (x<=this.plateau.length-1 && y>=0 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
 			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
 				c = this.plateau[x][y].getCouleur();
 			}
@@ -180,7 +192,7 @@ public class Plateau {
 		int x = i+1;
 		int y = j+1;
 		int align = 1;
-		while (x<=this.plateau.length-1 && j<=this.plateau[x].length-1 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
+		while (x<=this.plateau.length-1 && y<=this.plateau[x].length-1 && this.codeCouleur.get(c).contains(this.plateau[x][y].getCouleur())){
 			if (c.equals(special) && !this.plateau[x][y].getCouleur().equals(special)){
 				c = this.plateau[x][y].getCouleur();
 			}
@@ -408,11 +420,14 @@ public class Plateau {
 	public class Case{
 		public final int i, j;
 		private String couleur;
+		public BoutonCase bouton;
 		
 		public Case(int i, int j){
 			this.i = i;
 			this.j = j;
 			this.couleur = "";
+			this.bouton = new BoutonCase(this, this.getImage());
+			
 		}
 		
 		/**
@@ -422,6 +437,9 @@ public class Plateau {
 		public void pose(String c){
 			//TODO
 			this.couleur = c;
+			panneau.remove(this.bouton);
+			this.bouton = new BoutonCase(this, this.getImage());
+			panneau.add(this.bouton, (i*plateau.length)+j);
 		}
 		
 		/**
@@ -430,6 +448,17 @@ public class Plateau {
 		public void libere(){
 			//TODO
 			this.couleur = "";
+			panneau.remove(this.bouton);
+			this.bouton = new BoutonCase(this, this.getImage());
+			panneau.add(this.bouton, (i*plateau.length)+j);
+		}
+		
+		private String getImage(){
+			if (this.couleur == ""){
+				return "void.png";
+			} else {
+				return this.couleur+".png";
+			}
 		}
 		
 		/**
@@ -451,7 +480,28 @@ public class Plateau {
 		public String toString(){
 			return "("+this.i+", "+this.j+")";
 		}
+		
+		public class BoutonCase extends JButton{
+			private Case c;
+			
+			public BoutonCase(Case c, String filename){
+				super(new ImageIcon(filename));
+				this.setBorder(BorderFactory.createEmptyBorder());
+				//this.setContentAreaFilled(false);
+				this.c = c;
+				class ML extends MouseAdapter{
+					public void mousePressed(MouseEvent e){
+						jeu.actionAFaire(c);
+					}
+				}
+				this.addMouseListener(new ML());
+			}
+			
+			
+			
+		}
 	}
+	
 	
 	//fonction test toute pourrie
 	public void afficherPlateau(){
