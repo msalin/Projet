@@ -32,7 +32,7 @@ public class Plateau {
 			}
 		this.panneau = new PlateauJPanel(this);
 		}
-		testAlignDouble();
+		//testAlignDouble();
 	}
 	
 	 private void testAlignDouble() {

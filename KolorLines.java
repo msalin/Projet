@@ -14,10 +14,10 @@ public class KolorLines extends Jeu {
 	public KolorLines(Joueur j1, int taille) {
 		super(j1, new JoueurIA(), new Plateau(taille));
 		HashMap<String, List<String>> h = new HashMap<String, List<String>>();
-		String[] couleurs = new String[] { Couleur.BLACK, Couleur.WHITE, Couleur.BLUE, Couleur.RED, Couleur.YELLOW };
+		String[] couleurs = new String[] { Couleur.BLACK, Couleur.WHITE, Couleur.BLUE, Couleur.RED, Couleur.YELLOW, Couleur.GREEN, Couleur.VIOLET };
 		List<String> lrainbow = new ArrayList<String>();
 		lrainbow.add(Couleur.RAINBOW);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < couleurs.length; i++) {
 			List<String> l = new ArrayList<String>();
 			l.add(couleurs[i]);
 			l.add(Couleur.RAINBOW);
@@ -28,6 +28,7 @@ public class KolorLines extends Jeu {
 		h.put("", new ArrayList<String>());
 		this.plateau.setCodeCouleur(h);
 		this.prochainsCoups = this.creerProchainsCoups(taille * taille);
+		
 
 		this.frame.setTitle("KolorLines");
 		this.scores.add(new JLabel(this.joueur1.nom + " : " + this.joueur1.getNbPoints() + " points"));
@@ -40,19 +41,23 @@ public class KolorLines extends Jeu {
 		List<String> prochainCoups = new ArrayList<String>();
 		Random r = new Random();
 		for (int i = 0; i < nbCases; i++) {
-			int n = r.nextInt(100);
-			if (n < 5) {
+			float n = r.nextFloat()*100;
+			if (n < 2) {
 				prochainCoups.add(Couleur.RAINBOW);
-			} else if (n < 24) {
+			} else if (n < 16) {
 				prochainCoups.add(Couleur.BLACK);
-			} else if (n < 43) {
+			} else if (n < 30) {
 				prochainCoups.add(Couleur.WHITE);
-			} else if (n < 62) {
+			} else if (n < 44) {
 				prochainCoups.add(Couleur.BLUE);
-			} else if (n < 81) {
+			} else if (n < 58) {
 				prochainCoups.add(Couleur.RED);
-			} else {
+			} else if (n < 72){
 				prochainCoups.add(Couleur.YELLOW);
+			} else if (n < 86){
+				prochainCoups.add(Couleur.GREEN);
+			} else {
+				prochainCoups.add(Couleur.VIOLET);
 			}
 		}
 		return prochainCoups;
@@ -105,14 +110,14 @@ public class KolorLines extends Jeu {
 		for (int i = 0; i < 8; i++) {
 			System.out.println(couleurs[i] + " " + score[i]);
 		}
-		for (int n = 0; n < 8; n++) {
-			int s = score[n];
-			if (s >= 5) {
-				for (Case caseSuppr : casesVisitees.get(n)) {
-					this.plateau.libere(caseSuppr.i, caseSuppr.j);
-				}
-			}
-		}
+		//for (int n = 0; n < 8; n++) {
+		//	int s = score[n];
+		//	if (s >= 5) {
+		//		for (Case caseSuppr : casesVisitees.get(n)) {
+		//			this.plateau.libere(caseSuppr.i, caseSuppr.j);
+		//		}
+		//	}
+		//}
 
 		for (int n = 0; n < 8; n += 2) {
 			if (couleurs[n].equals(couleurs[n + 1]) || couleurs[n].equals(Couleur.RAINBOW)
@@ -120,6 +125,12 @@ public class KolorLines extends Jeu {
 				int s = score[n] + score[n + 1] - 1;
 				if (s >= 5) {
 					this.joueur1.addScore(s);
+					for (Case caseSuppr : casesVisitees.get(n)) {
+						this.plateau.libere(caseSuppr.i, caseSuppr.j);
+					}
+					for (Case caseSuppr : casesVisitees.get(n+1)) {
+						this.plateau.libere(caseSuppr.i, caseSuppr.j);
+					}
 				}
 			}
 		}
@@ -172,23 +183,14 @@ public class KolorLines extends Jeu {
 				this.frame.setVisible(true);
 			} catch (CaseOccupeeException e) {
 				System.out.println(e);
-				afficheMessage(e.toString());
+				afficheMessage("Ordinateur "+e.toString());
 			}
 		}
 		return cases;
 	}
 
 	private boolean canStart() {
-		if (!this.plateau.existeCasesLibres()) {
-			return false;
-		}
-		boolean libre = false;
-		for (Case c : this.casesDepart) {
-			if (this.plateau.existeCaseLibreAutour(c.i, c.j)) {
-				libre = true;
-			}
-		}
-		return libre;
+		return this.plateau.existeCasesLibres();
 	}
 
 	public synchronized void actionAFaire(Case c) {

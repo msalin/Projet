@@ -46,6 +46,15 @@ import javax.swing.JButton;
 			return this.couleur.equals("");
 		}
 		
+		public boolean equals(Object o){
+			if (o instanceof Case){
+				if (this.i == ((Case)o).i && this.j == ((Case) o).j){
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		/**
 		 * Renvoie la couleur de cette Case.
 		 * @return

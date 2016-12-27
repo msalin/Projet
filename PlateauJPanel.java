@@ -18,6 +18,8 @@ public class PlateauJPanel extends JPanel implements MouseListener {
 	public static BufferedImage imaageRed;
 	public static BufferedImage imaageWhite;
 	public static BufferedImage imaageYellow;
+	public static BufferedImage imaageGreen;
+	public static BufferedImage imaageViolet;
 	
 	public PlateauJPanel(Plateau plateau) {
 		addMouseListener(this);
@@ -30,6 +32,8 @@ public class PlateauJPanel extends JPanel implements MouseListener {
 			imaageRed = ImageIO.read(new File("images/"+Couleur.RED+".png"));
 			imaageWhite = ImageIO.read(new File("images/"+Couleur.WHITE+".png"));
 			imaageYellow = ImageIO.read(new File("images/"+Couleur.YELLOW+".png"));
+			imaageGreen = ImageIO.read(new File("images/"+Couleur.GREEN+".png"));
+			imaageViolet = ImageIO.read(new File("images/"+Couleur.VIOLET+".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -49,6 +53,10 @@ public class PlateauJPanel extends JPanel implements MouseListener {
 			return imaageWhite;
 		case Couleur.YELLOW:
 			return imaageYellow;
+		case Couleur.GREEN:
+			return imaageGreen;
+		case Couleur.VIOLET:
+			return imaageViolet;
 		default:
 			break;
 		}
@@ -94,25 +102,26 @@ public class PlateauJPanel extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		int caseX = e.getX()/TAILLE_CASE;
 		int caseY = e.getY()/TAILLE_CASE;
-		if (! plateau.estVide(caseX, caseY)) {
-			plateau.pionSelectionne = plateau.taableauCases[caseX][caseY];
-		} else {
-			try {
-				if (plateau.pionSelectionne != null	) {
-					plateau.deplace(plateau.pionSelectionne.i, plateau.pionSelectionne.j, caseX, caseY);
-					plateau.getJeu().calculScore(plateau.taableauCases[caseX][caseY]);
-					plateau.getJeu().tourOrdinateur(3);
-					
-				}
-	
-			} catch (PasDeCheminException e1) {
-				e1.printStackTrace();
-			} catch (CaseOccupeeException e1) {
-				e1.printStackTrace();
-			} catch (CaseVideException e1) {
-				e1.printStackTrace();
-			}
-		}
+		plateau.getJeu().actionAFaire(plateau.taableauCases[caseX][caseY]);
+//		if (! plateau.estVide(caseX, caseY)) {
+//			plateau.pionSelectionne = plateau.taableauCases[caseX][caseY];
+//		} else {
+//			try {
+//				if (plateau.pionSelectionne != null	) {
+//					plateau.deplace(plateau.pionSelectionne.i, plateau.pionSelectionne.j, caseX, caseY);
+//					plateau.getJeu().calculScore(plateau.taableauCases[caseX][caseY]);
+//					plateau.getJeu().tourOrdinateur(3);
+//					
+//				}
+//	
+//			} catch (PasDeCheminException e1) {
+//				e1.printStackTrace();
+//			} catch (CaseOccupeeException e1) {
+//				e1.printStackTrace();
+//			} catch (CaseVideException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
 	}
 	
 }
