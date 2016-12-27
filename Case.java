@@ -30,6 +30,13 @@ import javax.swing.JButton;
 			this.couleur = c;
 		}
 		
+		public boolean equals(Object o){
+			if (o instanceof Case){
+				return this.i == ((Case)o).i && this.j == ((Case)o).j;
+			}
+			return false;
+		}
+		
 		/**
 		 * A COMMENTER
 		 */
