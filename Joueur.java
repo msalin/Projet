@@ -1,3 +1,4 @@
+import java.util.List;
 public abstract class Joueur {
   public final String nom;
   private int nbPointsCourants;
@@ -11,9 +12,13 @@ public abstract class Joueur {
     this.nbPointsCourants = 0;
   }
   
+  public void addScore(int i){
+	  this.nbPointsCourants += i;
+  }
+  
   public int getNbPoints(){
     return this.nbPointsCourants;
   }
   
-  public abstract int[] getCoup();
+  public abstract Case getCoup(List<Case> coupsPossibles);
 }

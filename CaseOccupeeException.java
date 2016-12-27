@@ -6,7 +6,7 @@ public class CaseOccupeeException extends Exception{
   }
   
   public String toString(){
-    return "La case "+c.toString()+" est occupÃ©e !";
+    return "La case "+c.toString()+" est occupée !";
   }
 
 }
