@@ -32,7 +32,6 @@ public class KolorLines extends Jeu {
 
 		this.frame.setTitle("KolorLines");
 		this.scores.add(new JLabel(this.joueur1.nom + " : " + this.joueur1.getNbPoints() + " points"));
-		this.frame.setSize(1280, 720);
 		this.frame.setVisible(true);
 
 	}

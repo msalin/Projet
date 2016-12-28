@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class PlateauJPanel extends JPanel implements MouseListener {
-	private static int TAILLE_CASE = 50;
+	public final static int TAILLE_CASE = 50;
 	private BufferedImage backGround;
 	private Plateau plateau;
 	public static BufferedImage imaageBlack;
@@ -25,7 +25,7 @@ public class PlateauJPanel extends JPanel implements MouseListener {
 		addMouseListener(this);
 		this.plateau = plateau;
 		try {
-			backGround = ImageIO.read(new File("images/plateau.jpg"));
+			backGround = ImageIO.read(new File("images/fond.png"));
 			imaageBlack = ImageIO.read(new File("images/"+Couleur.BLACK+".png"));
 			imaageBlue = ImageIO.read(new File("images/"+Couleur.BLUE+".png"));
 			imaageRainbow = ImageIO.read(new File("images/"+Couleur.RAINBOW+".png"));

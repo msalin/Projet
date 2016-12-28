@@ -28,15 +28,16 @@ public abstract class Jeu {
     p.setJeu(this);
     this.fini = false;
     this.frame = new JFrame();
+    this.frame.setSize(new Dimension(500, 500));
     this.frame.setLayout(new BoxLayout(this.frame.getContentPane(),BoxLayout.PAGE_AXIS));
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.scores = new JPanel();
-    this.scores.setMaximumSize(new Dimension(1000, 200));
-    this.scores.setMinimumSize(new Dimension(1000, 100));
+    this.scores.setMaximumSize(new Dimension(500, 200));
+    this.scores.setMinimumSize(new Dimension(500, 100));
     
     this.boutonsCouleurs = new JPanel();
-    this.boutonsCouleurs.setMaximumSize(new Dimension(1000, 200));
-    this.boutonsCouleurs.setMinimumSize(new Dimension(1000, 100));
+    this.boutonsCouleurs.setMaximumSize(new Dimension(500, 200));
+    this.boutonsCouleurs.setMinimumSize(new Dimension(500, 100));
 //    JButton btnBlack = new JButton(new ImageIcon(PlateauJPanel.imaageBlack));
 //    btnBlack.addActionListener(new ActionListener() {
 //		
@@ -94,8 +95,11 @@ public abstract class Jeu {
     this.frame.add(this.scores);
 //    this.frame.add(this.boutonsCouleurs);
     this.frame.add(this.plateau.panneau);
-    this.frame.setSize(new Dimension(1000, 500));
+    this.frame.setSize(new Dimension(this.plateau.size*PlateauJPanel.TAILLE_CASE+5, this.plateau.size*PlateauJPanel.TAILLE_CASE+60));
+    this.frame.setMinimumSize(new Dimension(this.plateau.size*PlateauJPanel.TAILLE_CASE+5, this.plateau.size*PlateauJPanel.TAILLE_CASE+60));
+    this.frame.setMaximumSize(new Dimension (this.plateau.size*PlateauJPanel.TAILLE_CASE+5, this.plateau.size*PlateauJPanel.TAILLE_CASE+60));
     this.frame.setLocationRelativeTo(null);
+    this.frame.setResizable(false);
   }
   
   public void afficheMessage(String m){
