@@ -1,7 +1,7 @@
 import java.util.List;
 public abstract class Joueur {
   public final String nom;
-  private int nbPointsCourants;
+  private transient int nbPointsCourants;
   
   public Joueur(String nom){
     this.nom = nom;
