@@ -99,7 +99,7 @@ public class Plateau {
 			return 1;
 		}
 		String c = this.taableauCases[i][j].getCouleur();
-		System.out.println("couleur n = "+c);
+		//System.out.println("couleur n = "+c);
 		int x = i-1;
 		int align = 1;
 		while (x>=0 && this.codeCouleur.get(c).contains(this.taableauCases[x][j].getCouleur())){
@@ -111,7 +111,7 @@ public class Plateau {
 			x--;
 		}
 		couleurs[2] = c;
-		System.out.println("couleur [2] = "+c);
+		//System.out.println("couleur [2] = "+c);
 		casesVisitees.add(cases);
 		return align;
 	}
@@ -123,12 +123,12 @@ public class Plateau {
 			return 1;
 		}
 		String c = this.taableauCases[i][j].getCouleur();
-		System.out.println("couleur s = "+c);
+		//System.out.println("couleur s = "+c);
 		int x = i+1;
 		int align = 1;
 		while (x<=this.taableauCases.length-1 && this.codeCouleur.get(c).contains(this.taableauCases[x][j].getCouleur())){
 			if (c.equals(special) && !this.taableauCases[x][j].getCouleur().equals(special)){
-				System.out.println("bouS");
+				//System.out.println("bouS");
 				c = this.taableauCases[x][j].getCouleur();
 			}
 			cases.add(this.taableauCases[x][j]);
@@ -136,7 +136,7 @@ public class Plateau {
 			x++;
 		}
 		couleurs[3] = c;
-		System.out.println("couleur [3] = "+c);
+		//System.out.println("couleur [3] = "+c);
 		casesVisitees.add(cases);
 		return align;
 	}
@@ -148,12 +148,12 @@ public class Plateau {
 			return 1;
 		}
 		String c = this.taableauCases[i][j].getCouleur();
-		System.out.println("couleur w = "+c);
+		//System.out.println("couleur w = "+c);
 		int y = j-1;
 		int align = 1;
 		while (y>=0 && this.codeCouleur.get(c).contains(this.taableauCases[i][y].getCouleur())){
 			if (c.equals(special) && !this.taableauCases[i][y].getCouleur().equals(special)){
-				System.out.println("bouW");
+				//System.out.println("bouW");
 				c = this.taableauCases[i][y].getCouleur();
 			}
 			cases.add(this.taableauCases[i][y]);
@@ -162,7 +162,7 @@ public class Plateau {
 		}
 		casesVisitees.add(cases);
 		couleurs[0] = c;
-		System.out.println("couleur [0] = "+c);
+		//System.out.println("couleur [0] = "+c);
 		return align;
 	}
 	
@@ -173,12 +173,12 @@ public class Plateau {
 			return 1;
 		}
 		String c = this.taableauCases[i][j].getCouleur();
-		System.out.println("couleur e = "+c);
+		//System.out.println("couleur e = "+c);
 		int y = j+1;
 		int align = 1;
 		while (y<=this.taableauCases[i].length-1 && this.codeCouleur.get(c).contains(this.taableauCases[i][y].getCouleur())){
 			if (c.equals(special) && !this.taableauCases[i][y].getCouleur().equals(special)){
-				System.out.println("bouE");
+				//System.out.println("bouE");
 				c = this.taableauCases[i][y].getCouleur();
 			}
 			cases.add(this.taableauCases[i][y]);
@@ -187,7 +187,7 @@ public class Plateau {
 		}
 		casesVisitees.add(cases);
 		couleurs[1] = c;
-		System.out.println("couleur [1] = "+c);
+		//System.out.println("couleur [1] = "+c);
 		return align;
 	}
 
@@ -198,7 +198,7 @@ public class Plateau {
 			return 1;
 		}
 		String c = this.taableauCases[i][j].getCouleur();
-		System.out.println("couleur NW = "+c);
+		//System.out.println("couleur NW = "+c);
 		int x = i-1;
 		int y = j-1;
 		int align = 1;
@@ -223,14 +223,14 @@ public class Plateau {
 			return 1;
 		}
 		String c = this.taableauCases[i][j].getCouleur();
-		System.out.println("couleur NE = "+c);
+		//System.out.println("couleur NE = "+c);
 		int x = i-1;
 		int y = j+1;
 		int align = 1;
 		while (x>=0 && y<=this.taableauCases[i].length-1 && this.codeCouleur.get(c).contains(this.taableauCases[x][y].getCouleur())){
 			if (c.equals(special) && !this.taableauCases[x][y].getCouleur().equals(special)){
 				c = this.taableauCases[x][y].getCouleur();
-				System.out.println("nouvelle couleur de NE "+c);
+				//System.out.println("nouvelle couleur de NE "+c);
 			}
 			cases.add(this.taableauCases[x][y]);
 			align++;
@@ -249,14 +249,14 @@ public class Plateau {
 			return 1;
 		}
 		String c = this.taableauCases[i][j].getCouleur();
-		System.out.println("couleur SW = "+c);
+		//System.out.println("couleur SW = "+c);
 		int x = i+1;
 		int y = j-1;
 		int align = 1;
 		while (x<=this.taableauCases.length-1 && y>=0 && this.codeCouleur.get(c).contains(this.taableauCases[x][y].getCouleur())){
 			if (c.equals(special) && !this.taableauCases[x][y].getCouleur().equals(special)){
 				c = this.taableauCases[x][y].getCouleur();
-				System.out.println("nouvelle couleur SW = "+c);
+				//System.out.println("nouvelle couleur SW = "+c);
 			}
 			cases.add(this.taableauCases[x][y]);
 			align++;
@@ -275,14 +275,14 @@ public class Plateau {
 			return 1;
 		}
 		String c = this.taableauCases[i][j].getCouleur();
-		System.out.println("couleur SE = "+c);
+		//System.out.println("couleur SE = "+c);
 		int x = i+1;
 		int y = j+1;
 		int align = 1;
 		while (x<=this.taableauCases.length-1 && y<=this.taableauCases[x].length-1 && this.codeCouleur.get(c).contains(this.taableauCases[x][y].getCouleur())){
 			if (c.equals(special) && !this.taableauCases[x][y].getCouleur().equals(special)){
 				c = this.taableauCases[x][y].getCouleur();
-				System.out.println("nouvelle couleur SE = "+c);
+				//System.out.println("nouvelle couleur SE = "+c);
 			}
 			cases.add(this.taableauCases[x][y]);
 			align++;
@@ -309,21 +309,21 @@ public class Plateau {
 		int[] alignements;
 		alignements = new int[8];
 		alignements[0] = getAlignNORTH(i, j, special, couleurs, casesVisitees);
-		System.out.println("alignement N = "+alignements[0]);
+		//System.out.println("alignement N = "+alignements[0]);
 		alignements[1] = getAlignSOUTH(i, j, special, couleurs, casesVisitees);
-		System.out.println("alignement S = "+alignements[1]);
+		//System.out.println("alignement S = "+alignements[1]);
 		alignements[2] = getAlignWEST(i, j, special, couleurs, casesVisitees);
-		System.out.println("alignement W = "+alignements[2]);
+		//System.out.println("alignement W = "+alignements[2]);
 		alignements[3] = getAlignEAST(i, j, special, couleurs, casesVisitees);
-		System.out.println("alignement E = "+alignements[3]);
+		//System.out.println("alignement E = "+alignements[3]);
 		alignements[4] = getAlignNW(i, j, special, couleurs, casesVisitees);
-		System.out.println("alignement NW = "+alignements[4]);
+		//System.out.println("alignement NW = "+alignements[4]);
 		alignements[5] = getAlignSE(i, j, special, couleurs, casesVisitees);
-		System.out.println("alignement SE = "+alignements[5]);
+		//System.out.println("alignement SE = "+alignements[5]);
 		alignements[6] = getAlignNE(i, j, special, couleurs, casesVisitees);
-		System.out.println("alignement NE = "+alignements[6]);
+		//System.out.println("alignement NE = "+alignements[6]);
 		alignements[7] = getAlignSW(i, j, special, couleurs, casesVisitees);
-		System.out.println("alignement SW = "+alignements[7]);
+		//System.out.println("alignement SW = "+alignements[7]);
 
 		
 //		for (int n=7; n>=1; n-=2){
@@ -339,15 +339,27 @@ public class Plateau {
 //		}
 		
 		for (int t = 0;t<alignements.length;t++){
-			System.out.println("couleurs ["+t+"] = "+couleurs[t]);
-			System.out.println("alignements ["+t+"] = "+alignements[t]);
+			//System.out.println("couleurs ["+t+"] = "+couleurs[t]);
+			//System.out.println("alignements ["+t+"] = "+alignements[t]);
 		}
 		return alignements;
 	}
 
 	public void libere(int i, int j){
 		this.taableauCases[i][j].libere();
-		this.casesLibres.add(this.taableauCases[i][j]);
+		if (! this.casesLibres.contains(this.taableauCases[i][j])){
+			this.casesLibres.add(this.taableauCases[i][j]);
+		}
+		this.printCasesVides();
+		
+	}
+	
+	public void printCasesVides(){
+		System.out.print("< ");
+		for (Case c : this.casesLibres){
+			System.out.print(c+" ");
+		}
+		System.out.print(">\n");
 	}
 	
 	/**
@@ -473,8 +485,9 @@ public class Plateau {
 	public void pose(int i, int j, String c) throws CaseOccupeeException{
 		//TODO
 		if (this.taableauCases[i][j].estLibre()){
-			this.taableauCases[i][j].pose(c);
 			this.casesLibres.remove(this.taableauCases[i][j]);
+			this.taableauCases[i][j].pose(c);
+			this.printCasesVides();
 		} else {
 			throw new CaseOccupeeException(this.taableauCases[i][j]);
 		}
@@ -489,10 +502,11 @@ public class Plateau {
 			throw new CaseOccupeeException(this.taableauCases[k][l]);
 		}
 		if (existeChemin(i, j, k, l)){
-			this.taableauCases[k][l].pose(this.taableauCases[i][j].getCouleur());
-			this.taableauCases[i][j].libere();
 			this.casesLibres.remove(this.taableauCases[k][l]);
 			this.casesLibres.add(this.taableauCases[i][j]);
+			this.taableauCases[k][l].pose(this.taableauCases[i][j].getCouleur());
+			this.taableauCases[i][j].libere();
+			this.printCasesVides();
 		} else {
 			throw new PasDeCheminException(this.taableauCases[i][j], this.taableauCases[k][l]);
 		}
@@ -553,6 +567,10 @@ public class Plateau {
 		}
 	}
 	
+	public boolean estVide(int caseX, int caseY) {
+		return taableauCases[caseX][caseY].getCouleur().equals("");
+	}
+	
 	public static void main(String[] args){
 		Plateau p = new Plateau(10);
 		HashMap<String, List<String>> h = new HashMap<String, List<String>>();
@@ -583,8 +601,12 @@ public class Plateau {
 			p.pose(2, 5, Couleur.BLACK);
 			p.pose(1, 5, Couleur.BLACK);
 			p.pose(0, 5, Couleur.BLACK);
+			System.out.println("deplace");
+			p.deplace(0,5,0,0);
+			System.out.println(p.taableauCases[0][0].estLibre());
+			System.out.println(p.taableauCases[0][5].estLibre());
 			score = p.getAlign(5, 5, Couleur.RAINBOW, new String[8], new ArrayList<List<Case>>());
-		} catch (CaseOccupeeException e){
+		} catch (Exception e){
 			
 		}
 		p.afficherPlateau();
@@ -601,7 +623,5 @@ public class Plateau {
 		}
 	}
 	
-	public boolean estVide(int caseX, int caseY) {
-		return taableauCases[caseX][caseY].getCouleur().equals("");
-	}
+	
 }

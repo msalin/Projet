@@ -14,7 +14,7 @@ import javax.swing.JButton;
 		public Case(int i, int j){
 			this.i = i;
 			this.j = j;
-			this.couleur = "";
+			this.couleur = "void";
 		}
 		
 		public Case(int i, int j, String couleur){
@@ -35,7 +35,7 @@ import javax.swing.JButton;
 		 */
 		public void libere(){
 			//TODO
-			this.couleur = "";
+			this.couleur = "void";
 		}
 		
 		/**
@@ -43,7 +43,7 @@ import javax.swing.JButton;
 		 * @return True si cette Case est libre, false sinon.
 		 */
 		public boolean estLibre(){
-			return this.couleur.equals("");
+			return this.couleur.equals("void");
 		}
 		
 		public boolean equals(Object o){
