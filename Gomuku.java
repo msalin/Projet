@@ -15,7 +15,7 @@ public class Gomuku extends Jeu{
 	    List<String> l2 = new ArrayList<String>();
 	    l2.add(Couleur.WHITE);
 	    h.put(Couleur.WHITE,l2);
-	    h.put("", new ArrayList<String>());
+	    h.put("void", new ArrayList<String>());
 	    this.plateau.setCodeCouleur(h);
 	    
 	    this.frame.setTitle("Gomuku");
