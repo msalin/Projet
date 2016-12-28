@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 public abstract class Jeu {
   protected Joueur joueur1;
@@ -98,13 +99,17 @@ public abstract class Jeu {
   }
   
   public void afficheMessage(String m){
-	  JFrame message = new JFrame();
-	  message.add(new JLabel(m));
-	  message.setSize(500, 100);
-	  message.setLocationRelativeTo(this.frame);
-	  message.setVisible(true);
+	  //JFrame message = new JFrame();
+	  //message.add(new JLabel(m));
+	  //message.setSize(500, 100);
+	  //message.setLocationRelativeTo(this.frame);
+	  //message.setVisible(true);
+	  JOptionPane.showMessageDialog(this.frame, m, "Information", JOptionPane.INFORMATION_MESSAGE);
   }
   
+  public void afficheErreur(String m){
+	  JOptionPane.showMessageDialog(this.frame, m, "Erreur", JOptionPane.ERROR_MESSAGE);
+  }
   public abstract void actionAFaire(Case c);
   
   //Abstract ?

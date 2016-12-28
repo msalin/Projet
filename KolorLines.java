@@ -197,7 +197,7 @@ public class KolorLines extends Jeu {
 				this.frame.setVisible(true);
 			} catch (CaseOccupeeException e) {
 				System.out.println(e);
-				afficheMessage("Ordinateur "+e.toString()+ " "+c.getCouleur());
+				afficheErreur("Ordinateur "+e.toString()+ " "+c.getCouleur());
 			}
 		}
 		return cases;
@@ -237,15 +237,15 @@ public class KolorLines extends Jeu {
 				} catch (PasDeCheminException e) {
 					System.out.println(e);
 					this.pionSelectionne = null;
-					this.afficheMessage(e.toString());
+					this.afficheErreur(e.toString());
 				} catch (CaseOccupeeException e) {
 					System.out.println(e);
 					this.pionSelectionne = null;
-					this.afficheMessage(e.toString());
+					this.afficheErreur(e.toString());
 				} catch (CaseVideException e) {
 					System.out.println(e);
 					this.pionSelectionne = null;
-					this.afficheMessage(e.toString());
+					this.afficheErreur(e.toString());
 
 				}
 			}
@@ -253,7 +253,7 @@ public class KolorLines extends Jeu {
 	}
 
 	public static void main(String[] args) {
-		KolorLines kl = new KolorLines(new JoueurHumain("Toto"), 10);
+		KolorLines kl = new KolorLines(new JoueurHumain("Toto"), 5);
 		kl.launch();
 	}
 
