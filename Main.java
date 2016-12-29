@@ -7,7 +7,11 @@
 	import javax.swing.SpinnerNumberModel;
 	import javax.swing.SpinnerModel;
 	import javax.swing.JSpinner;
-
+	import javax.swing.BoxLayout;
+	import javax.swing.JTextField;
+	import javax.swing.JLabel;
+	import javax.swing.JCheckBox;
+	
 	public class Main {
 
 		static JFrame fenetre = new JFrame();
@@ -59,21 +63,36 @@
 		public static class PanelMenuJeu extends JPanel{
 			public final String game;
 			private final SpinnerTaille st;
+			private final PanelJoueur joueurs;
 			public PanelMenuJeu(String game){
 				super();
+				this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 				this.game = game;
+				JPanel taillePlateau = new JPanel();
+				taillePlateau.add(new JLabel("Taille du plateau : "));
 				this.st = new SpinnerTaille();
-				this.add(st);
+				taillePlateau.add(this.st);
+				this.add(taillePlateau);
+				
+
+				this.joueurs = new PanelJoueur(game.equals("Gomuku"));
+				this.add(this.joueurs);
 				
 				JButton launch = new JButton("OK");
 				final class Lancer extends MouseAdapter{
 					
 					public void mousePressed(MouseEvent e){
 						int size = (int) st.getValue();
+						String nom_j1 = joueurs.getJ1().getText();
 						if (game.equals("Gomuku")){
-							new Gomuku(new JoueurHumain("Toto"), size);
+							if (joueurs.secondJoueurSelectionne()){
+								String nom_j2 = joueurs.getJ2().getText();
+								new Gomuku(new JoueurHumain(nom_j1), new JoueurHumain(nom_j2), size);
+							} else {
+								new Gomuku(new JoueurHumain(nom_j1), size);
+							}
 						} else if (game.equals("KolorLines")){
-							KolorLines kl = new KolorLines(new JoueurHumain("Toto"), size);
+							KolorLines kl = new KolorLines(new JoueurHumain(nom_j1), size);
 							kl.launch();
 						}
 					}
@@ -94,6 +113,49 @@
 				});
 				this.add(goBack);
 				this.setVisible(true);
+			}
+		}
+		
+		public static class PanelJoueur extends JPanel{
+			
+			private JTextField nomJ1;
+			private JTextField nomJ2;
+			private JCheckBox secondJoueur;
+			
+			public PanelJoueur(boolean secondJoueur){
+				super();
+				this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+				
+				JPanel joueur1 = new JPanel();
+				joueur1.add(new JLabel("Nom du joueur : "));
+				this.nomJ1 = new JTextField(20);
+				joueur1.add(this.nomJ1);
+				this.add(joueur1);
+				
+				if (secondJoueur){
+					this.secondJoueur = new JCheckBox("Jouer avec un deuxième joueur humain ");
+					this.add(this.secondJoueur);
+					JPanel joueur2 = new JPanel();
+					joueur2.add(new JLabel("Nom du 2nd joueur : "));
+					this.nomJ2 = new JTextField(20);
+					joueur2.add(this.nomJ2);
+					this.add(joueur2);
+				}
+			}
+			
+			public JTextField getJ1(){
+				return this.nomJ1;
+			}
+			
+			public JTextField getJ2(){
+				return this.nomJ2;
+			}
+			
+			public boolean secondJoueurSelectionne(){
+				if (this.secondJoueur == null){
+					return false;
+				}
+				return this.secondJoueur.isSelected();
 			}
 		}
 }
