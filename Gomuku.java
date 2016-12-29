@@ -70,9 +70,16 @@ public class Gomuku extends Jeu{
 	    try {
 	      this.plateau.pose(coordonnees.i, coordonnees.j, couleur); 
 	      int[] score = this.plateau.getAlign(coordonnees.i, coordonnees.j);
-	      for (int i=0; i<score.length; i++){
-	       if (score[i]>=5){
+	      for (int i=0; i<8; i+=2){
+	       if (score[i]+score[i+1]-1>=5){
 	        j.addScore(1); 
+	       } else {
+	    	   if (score[i]>=5){
+	    		   j.addScore(1);
+	    	   }
+	    	   if (score[i+1]>=5){
+	    		   j.addScore(1);
+	    	   }
 	       }
 	      }
 	      JLabel text = (JLabel) this.scores.getComponent(0);
@@ -89,10 +96,17 @@ public class Gomuku extends Jeu{
 		  try{
 			  this.plateau.pose(i, j, couleur); 
 			  int[] score = this.plateau.getAlign(i, j);
-			  for (int n=0; n<score.length; n++){
-				  if (score[n]>=5){
-					  joueur.addScore(1); 
-				  }
+			  for (int n=0; n<8; n+=2){
+			       if (score[n]+score[n+1]-1>=5){
+			        joueur.addScore(1); 
+			       } else {
+			    	   if (score[n]>=5){
+			    		   joueur.addScore(1);
+			    	   }
+			    	   if (score[n+1]>=5){
+			    		   joueur.addScore(1);
+			    	   }
+			       }
 			  }
 			  JLabel text = (JLabel) this.scores.getComponent(0);
 			  this.scores.remove(text);
