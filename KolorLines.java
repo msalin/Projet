@@ -62,6 +62,9 @@ public class KolorLines extends Jeu {
 		return prochainCoups;
 	}
 
+	/**
+	* Lance ce KolorLines à la console
+	**/
 	public void jouer() {
 
 		while (this.plateau.existeCasesLibres()) {
@@ -96,7 +99,7 @@ public class KolorLines extends Jeu {
 		}
 	}
 
-	public void calculScore(Case c) {
+	private void calculScore(Case c) {
 		List<List<Case>> casesVisitees = new ArrayList<List<Case>>();
 		String[] couleurs = new String[8];
 		int[] score = this.plateau.getAlign(c.i, c.j, Couleur.RAINBOW, couleurs, casesVisitees);
@@ -151,15 +154,24 @@ public class KolorLines extends Jeu {
 		this.scores.add(new JLabel(this.joueur1.nom + " : " + this.joueur1.getNbPoints() + " points"));
 	}
 
+	/**
+	* Lance ce KolorLines en plaçant les trois premiers pions
+	**/
 	public void launch() {
 		this.casesDepart = tourOrdinateur(3);
 	}
 
+	/**
+	* Affiche le plateau à la console
+	**/
 	public void afficherPlateau() {
 		System.out.println(this.joueur1.nom + " : " + this.joueur1.getNbPoints() + " points");
 		this.plateau.afficherPlateau();
 	}
 
+	/**
+	* Lance le tour du joueur humain
+	**/
 	public List<Case> tourHumain(List<Case> casesDepart) {
 		Case depart = joueur1.getCoup(casesDepart);
 		System.out.println(this.plateau.getCasesLibres().size());
@@ -180,7 +192,9 @@ public class KolorLines extends Jeu {
 			return tourHumain(casesDepart);
 		}
 	}
-
+	/**
+	* Pose nbCases pions sur le plateau
+	**/
 	@Override
 	public List<Case> tourOrdinateur(int nbCases) {
 		List<Case> cases = new ArrayList<Case>(nbCases);
@@ -206,6 +220,10 @@ public class KolorLines extends Jeu {
 		return this.plateau.existeCasesLibres();
 	}
 
+	/**
+	* Enregistre la case sélectionnée par le joueur ou si une case est déjà enregistrée,
+	* déplace le pion vers la case sélectionnée, calcule le score et pose les trois pions suivants
+	**/
 	public synchronized void actionAFaire(Case c) {
 		if (!this.fini) {
 			if (this.pionSelectionne == null) {
