@@ -102,6 +102,9 @@ public abstract class Jeu {
     this.frame.setResizable(false);
   }
   
+/**
+* Affiche un message d'information
+**/
   public void afficheMessage(String m){
 	  //JFrame message = new JFrame();
 	  //message.add(new JLabel(m));
@@ -111,6 +114,9 @@ public abstract class Jeu {
 	  JOptionPane.showMessageDialog(this.frame, m, "Information", JOptionPane.INFORMATION_MESSAGE);
   }
   
+/**
+* Affiche un message d'erreur
+**/
   public void afficheErreur(String m){
 	  JOptionPane.showMessageDialog(this.frame, m, "Erreur", JOptionPane.ERROR_MESSAGE);
   }
