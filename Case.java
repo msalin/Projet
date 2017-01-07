@@ -22,19 +22,17 @@ import javax.swing.JButton;
 			this.couleur = couleur;
 		}
 		/**
-		 * A COMMENTER
-		 * @param c
+		 * Pose la couleur c sur cette Case
+		 * @param c une couleur
 		 */
 		public void pose(String c){
-			//TODO
 			this.couleur = c;
 		}
 		
 		/**
-		 * A COMMENTER
+		 * Libère cette Case
 		 */
-		public void libere(){
-			//TODO
+		public void libere(
 			this.couleur = "void";
 		}
 		
@@ -46,7 +44,7 @@ import javax.swing.JButton;
 			return this.couleur.equals("void");
 		}
 		
-		public boolean equals(Object o){
+		@Override public boolean equals(Object o){
 			if (o instanceof Case){
 				if (this.i == ((Case)o).i && this.j == ((Case) o).j){
 					return true;
@@ -57,13 +55,13 @@ import javax.swing.JButton;
 		
 		/**
 		 * Renvoie la couleur de cette Case.
-		 * @return
+		 * @return une couleur
 		 */
 		public String getCouleur(){
 			return this.couleur;
 		}
 		
-		public String toString(){
+		@Override public String toString(){
 			return "("+this.i+", "+this.j+")";
 		}
 		
