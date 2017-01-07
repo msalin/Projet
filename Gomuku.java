@@ -6,6 +6,12 @@ import javax.swing.JLabel;
 
 public class Gomuku extends Jeu{
 	private boolean joueur1plays;
+	/**
+	* Instancie un nouveau Gomuku
+	* @param j1 le joueur noir
+	* @param j2 le joueur blanc
+	* @param taille la taille du plateau
+	**/
 	public Gomuku(Joueur j1, Joueur j2, int taille){
 	    super(j1, j2, new Plateau(taille));
 	    HashMap<String, List<String>> h = new HashMap<String, List<String>>();
@@ -24,14 +30,18 @@ public class Gomuku extends Jeu{
 	    this.joueur1plays = true;
 	  }
 	  
+	/**
+	* Instancie un Gomuku dont le joueur blanc est un robot
+	* @param j1 joueur noir
+	* @param taille la taille du plateau
+	**/
 	  public Gomuku(Joueur j1, int taille){
 		  this(j1, new JoueurIA(), taille);
 	  }
 	  
-	  public Gomuku(int taille){
-		  this(new JoueurIA(), new JoueurIA(), taille);
-	  }
-	  
+	  /**
+	  * Lance ce Gomuku √† la console
+	  **/
 	  public void jouer(){
 	    while(this.plateau.existeCasesLibres()){
 	      tour(this.joueur1, Couleur.BLACK);
@@ -42,17 +52,20 @@ public class Gomuku extends Jeu{
 	      }
 	    }
 	    if (joueur1.getNbPoints()>joueur2.getNbPoints()){
-	    	System.out.println("Noir a gagnÈ");
-	    	afficheMessage("Blanc a gagnÈ");
+	    	System.out.println("Noir a gagn√©");
+	    	afficheMessage("Blanc a gagn√©");
 	    } else if (joueur2.getNbPoints()>joueur1.getNbPoints()){
-	    	System.out.println("Blanc a gagnÈ");
-	    	afficheMessage("Blanc a gagnÈ");
+	    	System.out.println("Blanc a gagn√©");
+	    	afficheMessage("Blanc a gagn√©");
 	    } else {
-	    	System.out.println("EgalitÈ");
-	    	afficheMessage("Blanc a gagnÈ");
+	    	System.out.println("Egalit√©");
+	    	afficheMessage("Blanc a gagn√©");
 	    }
 	  }
 	  
+	  /**
+	  * Lance le tour d'un joueur robot si c'est son tour
+	  **/
 	  public void launch(){
 		  if (this.joueur1plays && this.joueur1 instanceof JoueurIA){
 			  tour(this.joueur1, Couleur.BLACK);
@@ -122,18 +135,22 @@ public class Gomuku extends Jeu{
 	  
 	  private void afficheFin(){
 		  if (joueur1.getNbPoints()>joueur2.getNbPoints()){
-		    	System.out.println("Noir a gagnÈ");
-		    	afficheMessage("Noir a gagnÈ");
+		    	System.out.println("Noir a gagn√©");
+		    	afficheMessage("Noir a gagn√©");
 		    } else if (joueur2.getNbPoints()>joueur1.getNbPoints()){
-		    	System.out.println("Blanc a gagnÈ");
-		    	afficheMessage("Blanc a gagnÈ");
+		    	System.out.println("Blanc a gagn√©");
+		    	afficheMessage("Blanc a gagn√©");
 		    } else {
-		    	System.out.println("EgalitÈ");
-		    	afficheMessage("EgalitÈ");
+		    	System.out.println("Egalit√©");
+		    	afficheMessage("Egalit√©");
 		    }
 	  }
 	  
 	  
+	/**
+	* Pose un pion √† la case qui a √©t√© s√©lectionn√© par le joueur dont c'est le tour et calcule le score
+	* si le joueur qui doit joueur ensuite est un robot, la fonction lance le tour du robot
+	**/
 	  public void actionAFaire(Case c){
 		System.out.println(c.toString());
 		if (! this.fini){
@@ -171,6 +188,9 @@ public class Gomuku extends Jeu{
 		}
 	  }
 	  
+	  /**
+	  * Affiche le plateau sur la console
+	  **/
 	  public void affichePlateau(){
 		System.out.printf("%s : %d alignements      %s : %d alignements\n", this.joueur1.nom, this.joueur1.getNbPoints(), this.joueur2.nom, this.joueur2.getNbPoints());
 		this.plateau.afficherPlateau();
