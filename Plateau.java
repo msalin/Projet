@@ -19,7 +19,10 @@ public class Plateau {
 	protected String couleurSelectionnee;
 	public PlateauJPanel panneau;
 
-	
+	/**
+	* Instancie un Plateau carré de taille size
+	* @param size la taille de ce Plateau
+	*/
 	public Plateau(int size){
 		this.size = size;
 		this.taableauCases = new Case[size][size];
@@ -66,13 +69,26 @@ public class Plateau {
 		 this.jeu = jeu;
 	 }
 	
+	/**
+	* Renvoie la liste des cases libres de ce Plateau
+	* @return une liste de Case
+	*/
 	public List<Case> getCasesLibres(){
 		return this.casesLibres;
 	}
+	
+	/**
+	* Renvoie true si il existe des cases libres sur ce Plateau.
+	* @return True si il existe des cases libres, False sinon
+	*/
 	public boolean existeCasesLibres(){
 		return this.casesLibres.size()>0;
 	}
 	
+	/**
+	* Renvoie le nombre de cases libres de ce Plateau
+	* @return un entier entre 0 et le nombre de cases de ce Plateau
+	*/
 	public int getNbCasesLibres(){
 		return this.casesLibres.size();
 	}
@@ -81,17 +97,16 @@ public class Plateau {
 		this.codeCouleur = h;
 	}
 	
+	/**
+	* Renvoie le nombre de pions alignés avec le pion à la case (i, j)
+	* @param i Abscisse de la case
+	* @param j Ordonnée de la case
+	* @return Un tableau d'entiers de taille 8 [Nord, Sud, Ouest, Est, Nord-Ouest, Sud-Est, Nord-Est, Sud-Ouest] 
+	*/
 	public int[] getAlign(int i, int j){
 		return getAlign(i, j, "", new String[8], new ArrayList<List<Case>>());
 	}
 	
-	/**
-	 * Renvoie le nombre de pions align�s au nord
-	 * @param i
-	 * @param j
-	 * @param special
-	 * @return
-	 */
 	private int getAlignWEST(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
 		List<Case> cases = new ArrayList<Case>();
 		cases.add(this.taableauCases[i][j]);
@@ -296,9 +311,12 @@ public class Plateau {
 	
 	/**
 	 * Renvoie le nombre de pions alignés pour chacune des 4 directions à partir de la case (i, j).
-	 * @param i Ordonnée de la case.
-	 * @param j Abscisse de la case.
-	 * @return Un tableau d'entiers [Nord>Sud, Est>Ouest, Nord-Ouest>Sud-Est, Nord-Est>Sud-Ouest]  
+	 * @param i Abscisse de la case.
+	 * @param j Ordonnée de la case.
+	 * @param special Couleur spéciale.
+	 * @param couleurs Tableau de taille 8 qui contient les couleurs pour chaque direction.
+	 * @param casesVisitees Liste de liste de Cases.
+	 * @return Un tableau d'entiers de taille 8 [Nord, Sud, Ouest, Est, Nord-Ouest, Sud-Est, Nord-Est, Sud-Ouest]  
 	 */
 	public int[] getAlign(int i, int j, String special, String[] couleurs, List<List<Case>> casesVisitees){
 		//TODO : améliorer la compléxité
@@ -345,6 +363,11 @@ public class Plateau {
 		return alignements;
 	}
 
+	/**
+	* Libère la case (i, j)
+	* @param i Abscisse de la case
+	* @param j Ordonnée de la case
+	*/
 	public void libere(int i, int j){
 		this.taableauCases[i][j].libere();
 		if (! this.casesLibres.contains(this.taableauCases[i][j])){
@@ -364,10 +387,10 @@ public class Plateau {
 	
 	/**
 	 * Renvoie true s'il existe un chemin de la case (i,j) à la case (k,l)
-	 * @param i Ordonnée de la case d'origine.
-	 * @param j Abscisse de la case d'origine.
-	 * @param k Ordonnée de la case d'arrivée.
-	 * @param l Abscisse de la case d'arrivée.
+	 * @param i Abscisse de la case d'origine.
+	 * @param j Ordonnée de la case d'origine.
+	 * @param k Abscisse de la case d'arrivée.
+	 * @param l Ordonnée de la case d'arrivée.
 	 * @return True s'il existe un chemin, false sinon.
 	 */
 	public boolean existeChemin(int i, int j, int k, int l){
@@ -482,8 +505,14 @@ public class Plateau {
 		}
 	}
 	
+	/**
+	* Pose un pion de couleur c à la case (i, j)
+	* @param i Abscisse de la case
+	* @param j Ordonnée de la case
+	* @param c Couleur du pion
+	* @throws CaseOccupeeException Si un pion est déjà sur la case
+	*/
 	public void pose(int i, int j, String c) throws CaseOccupeeException{
-		//TODO
 		if (this.taableauCases[i][j].estLibre()){
 			this.casesLibres.remove(this.taableauCases[i][j]);
 			this.taableauCases[i][j].pose(c);
@@ -494,8 +523,17 @@ public class Plateau {
 		panneau.repaint();
 	}
 	
+	/**
+	* Déplace le pion de la case (i, j) à la case (k, l)
+	* @param i Abscisse de la case de départ
+	* @param j Ordonnée de la case de départ
+	* @param k Abscisse de la case d'arrivée
+	* @param l Ordonnée de la case d'arrivée
+	* @throws PasDeCheminException Si il n'existe pas de chemin allant de la case (i, j) à la case (k, l)
+	* @throws CaseOccupeeException Si il y a déjà un pion sur la case d'arrivée
+	* @throws CaseVideException Si la case de départ est vide
+	*/
 	public void deplace(int i, int j, int k, int l) throws PasDeCheminException, CaseOccupeeException, CaseVideException{
-		//TODO
 		if (this.taableauCases[i][j].estLibre()){
 			throw new CaseVideException(this.taableauCases[i][j]);
 		} else if (!this.taableauCases[k][l].estLibre()){
@@ -513,6 +551,12 @@ public class Plateau {
 		panneau.repaint();
 	}
 	
+	/**
+	* Renvoie true si il existe au moins une case vide autour de la case (i, j)
+	* @param i Abscisse de la case
+	* @param j Ordonnée de la case
+	* @return booléen
+	*/
 	public boolean existeCaseLibreAutour(int i, int j){
 		if (i>0 && this.taableauCases[i-1][j].estLibre()){
 			return true;
@@ -543,7 +587,6 @@ public class Plateau {
 	
 	//fonction test toute pourrie
 	public void afficherPlateau(){
-		System.out.println("   0  1  2  3  4  5  6  7  8  9 ");
 		for (int i=0; i<this.taableauCases.length; i++){
 			System.out.print(" "+i+"");
 			for (int j=0; j<this.taableauCases[i].length; j++){
@@ -559,7 +602,11 @@ public class Plateau {
 					System.out.print("[R]");
 				} else if (this.taableauCases[i][j].getCouleur().equals(Couleur.YELLOW)){
 					System.out.print("[J]");
-				}else {
+				} else if (this.taableauCases[i][j].getCouleur().equals(Couleur.GREEN){
+					System.out.print("[G]");
+				} else if (this.taableauCases[i][j].getCouleur().equals(Couleur.GREEN){
+					System.out.print("[P]");
+				} else {
 					System.out.print("[?]");
 				}
 			}
@@ -567,8 +614,14 @@ public class Plateau {
 		}
 	}
 	
+	/**
+	* Renvoie true si la case (caseX, caseY) est vide
+	* @param caseX Abscisse de la case
+	* @param caseY Ordonnée de la case
+	* @return booléen
+	*/
 	public boolean estVide(int caseX, int caseY) {
-		return taableauCases[caseX][caseY].getCouleur().equals("");
+		return taableauCases[caseX][caseY].getCouleur().equals("void");
 	}
 	
 	public static void main(String[] args){
