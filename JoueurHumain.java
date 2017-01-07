@@ -6,6 +6,11 @@ public class JoueurHumain extends Joueur {
     super(nom);
   }
   
+ /**
+ * Renvoie la case sélectionnée par ce Joueur
+ * @param coupsPossibles Liste de Case libres
+ * @return Une Case
+ */
   public Case getCoup(List<Case> coupsPossibles){
 	  int index = 0;
 	  for (Case c : coupsPossibles){
